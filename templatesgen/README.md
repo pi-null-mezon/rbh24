@@ -18,9 +18,9 @@ https://drive.google.com/file/d/18wEUfMNohBJ4K3Ly5wpTejPfDzp-8fI8/view?usp=shari
 
 4. Download glint dataset:
 
-https://glint360K.download_link (TO DO - find link)
+https://paperswithcode.com/dataset/glint360k
 
-5. After this steps you coud run templates generation script:
+5. After this steps you could run templates generation script:
 
 ```bash
 python -m templatesgen.run --images_path "local_path_to_glint_dataset" --output_file "where_to_save_pickle_file"
