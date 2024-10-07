@@ -7,8 +7,7 @@ import torch
 from torch import optim
 from tqdm import tqdm
 from easydict import EasyDict as edict
-from tools import CustomDataSet, Averagemeter, Speedometer, print_one_line, model_size_mb, read_img_as_torch_tensor, \
-    tensor2image
+from tools import CustomDataSet, Averagemeter, Speedometer, print_one_line, model_size_mb, tensor2image
 from torch.utils.tensorboard import SummaryWriter
 from torch.cuda import amp
 from customloss import CustomLossForAutoencoder as CustomLoss
@@ -32,6 +31,7 @@ cfg.lr_scheduler = "Cosine"  # "StepPlateau"
 cfg.perception_net_name = 'vgg11'
 cfg.latent_space_dims = 512        # as features size for insightface/buffalo_l is
 cfg.max_lr = 0.001
+cfg.min_lr = 0.00001
 cfg.max_grad_norm = 10.0
 cfg.augment = False
 cfg.normalize_templates = True
@@ -87,13 +87,13 @@ if cfg.lr_scheduler == "StepPlateau":
                                                            mode='min',
                                                            patience=2,
                                                            factor=0.2,
-                                                           min_lr=0.000001,
+                                                           min_lr=cfg.min_lr,
                                                            verbose=True)
 else:
     scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer,
                                                                      T_0=cfg.num_epochs,
                                                                      T_mult=1,
-                                                                     eta_min=cfg.max_lr/5,
+                                                                     eta_min=cfg.min_lr,
                                                                      verbose=True)
 
 # ---------------------------- DATASETS
