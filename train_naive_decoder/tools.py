@@ -1,6 +1,7 @@
 from time import perf_counter
 from torch.utils.data import Dataset
 import albumentations as A
+import onnxruntime as ort
 import pickle
 import numpy as np
 import torch
@@ -140,3 +141,20 @@ def read_img_as_torch_tensor(filename, size, mean=(0.485, 0.456, 0.406), std=(0.
     return torch.from_numpy(image2tensor(mat, mean=mean, std=std, swap_red_blue=swap_rb))
 
 
+def initialize_onnx_session(model_path, use_cuda=True):
+    providers = ['CUDAExecutionProvider', 'CPUExecutionProvider'] if use_cuda else ['CPUExecutionProvider']
+    sess_options = ort.SessionOptions()
+    try:
+        session = ort.InferenceSession(model_path, sess_options, providers=providers)
+        if use_cuda:
+            assert 'CUDAExecutionProvider' in session.get_providers(), "CUDA is not available"
+        print(f"ONNX Runtime session initialized with providers: {session.get_providers()}")
+        return session
+    except Exception as e:
+        print(f"Error initializing ONNX Runtime session: {str(e)}")
+        return None
+
+
+def make_onnx_inference(session, input_data):
+    results = session.run(None, {session.get_inputs()[0].name: input_data})
+    return results[0]
