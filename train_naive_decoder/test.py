@@ -31,7 +31,7 @@ buffalo = initialize_onnx_session('../models/buffalo_l/w600k_r50.onnx', use_cuda
 
 
 def extract_temlpate_from_synth_image(img, onnx_session, normalize):
-    resized_img = cv2.resize(img, cfg.buffalo_size, interpolation=cv2.INTER_AREA)
+    resized_img = cv2.resize(img, cfg.buffalo_size, interpolation=cv2.INTER_LINEAR)
     tensor = image2tensor(resized_img, cfg.buffalo_mean, cfg.buffalo_std, cfg.buffalo_swap_red_blue)
     tensor = np.expand_dims(tensor, axis=0)
     template = make_onnx_inference(onnx_session, tensor)

@@ -56,6 +56,7 @@ train_templates_paths = [
     f"{local_data_path}/HACK/templatesgen_glint_60K_70K.pkl",
     f"{local_data_path}/HACK/templatesgen_glint_80K_90K.pkl",
     f"{local_data_path}/HACK/templatesgen_glint_90K_100K.pkl",
+    f"{local_data_path}/HACK/templatesgen_glint_100K_140K.pkl",
     f"{local_data_path}/HACK/templatesgen_glint_200K_210K.pkl",
     f"{local_data_path}/HACK/templatesgen_glint_210K_220K.pkl",
     f"{local_data_path}/HACK/templatesgen_glint_220K_230K.pkl",
