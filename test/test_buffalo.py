@@ -89,6 +89,6 @@ plt.xticks([(i-10)*0.1 for i in range(21)] )
 plt.title("Test set, 1849-id")
 plt.grid(color = 'black', linewidth = 0.1)
 
-ax.axvline(fnmr[closest_key], color='r')
+ax.axvline(thresholds[closest_key], color='r')
 
 plt.savefig('test/result/fnmr_fmr.png')
