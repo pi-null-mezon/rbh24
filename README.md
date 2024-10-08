@@ -13,8 +13,8 @@ pip install -r requirements.txt
 
 ### Repo structure
 
-[./templatesgen](./templatesgen) - scripts to make photo + biometric templates pairs, read [manual of how to use here](./templatesgen/README.md)
+[./templatesgen](./templatesgen) - scripts to make photo + biometric templates pairs
 
-[./train_naive_decoder](./train_naive_decoder) - scripts to train template to photo decoder (loss does not contain cosine similarity with insightface/buffalo_l templates)
+[./train_naive_decoder](./train_naive_decoder) - tools to train template to photo decoder
 
 [./researches](./researches) - some researches we have done along the way
