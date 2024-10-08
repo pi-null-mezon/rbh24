@@ -99,7 +99,7 @@ with torch.no_grad(), tqdm(total=cfg.max_samples_to_collect) as pbar:
         if len(cosines) >= cfg.max_samples_to_collect:
             break
 
-print(f"STATISTICS ON {len(cosines)} TEST SAMPLES:")
+print(f"STATISTICS ON {len(cosines)} TEST SAMPLES FROM GLINT:")
 cosines = np.array(cosines)
 print(f" - COSINE MIN:    {cosines.min().item():.4f}")
 print(f" - COSINE MEAN:   {cosines.mean().item():.4f}")

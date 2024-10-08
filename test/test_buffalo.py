@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from numpy.linalg import norm
 
+
 def compute_sim(feat1, feat2):
     feat1 = feat1.ravel()
     feat2 = feat2.ravel()
