@@ -35,7 +35,9 @@ def tensor2image(tensor, mean, std, swap_red_blue=False):
 
 
 class CustomDataSet(Dataset):
-    def __init__(self, templates_paths, photos_path, do_aug, size, mean, std, swap_reb_blue, normalize_templates):
+    def __init__(self, templates_paths, photos_path, do_aug, size, mean, std, swap_reb_blue, normalize_templates,
+                 max_samples_per_id=-1):
+        assert max_samples_per_id != 0, "max_samples_per_id should not be equal to 0"
         self.mean = mean
         self.std = std
         self.swap_red_blue = swap_reb_blue
@@ -48,8 +50,21 @@ class CustomDataSet(Dataset):
         for filename in templates_paths:
             with open(filename, 'rb') as i_f:
                 data = pickle.load(i_f)
-                self.filenames += data['file']
-                self.templates += data['buffalo']
+                if max_samples_per_id == -1:
+                    self.filenames += data['file']
+                    self.templates += data['buffalo']
+                else:
+                    tmp = {}
+                    for filename, template in zip(data['file'], data['buffalo']):
+                        _id = filename.split('/', 1)[0]
+                        if _id not in tmp:
+                            tmp[_id] = [(filename, template)]
+                        elif len(tmp[_id]) < max_samples_per_id:
+                            tmp[_id].append((filename, template))
+                    for _id in tmp:
+                        for filename, template in tmp[_id]:
+                            self.filenames.append(filename)
+                            self.templates.append(template)
         self.album = A.Compose([
             A.RandomBrightnessContrast(p=0.25, brightness_limit=(-0.25, 0.25)),
             A.HorizontalFlip(p=0.5),

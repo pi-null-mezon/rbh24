@@ -30,17 +30,17 @@ cfg.num_epochs = 10
 cfg.lr_scheduler = "Cosine"  # "StepPlateau"
 cfg.perception_net_name = 'vgg11'
 cfg.latent_space_dims = 512        # as features size for insightface/buffalo_l is
-cfg.max_lr = 0.001
+cfg.max_lr = 0.002
 cfg.min_lr = 0.00001
 cfg.max_grad_norm = 10.0
 cfg.augment = False
 cfg.normalize_templates = True
-cfg.model_name = f"buffalo_decoder_on_{cfg.perception_net_name}"
+cfg.model_name = f"buffalo_decoder_large_on_{cfg.perception_net_name}"
 cfg.max_batches_per_train_epoch = -1  # -1 - use all available batches
 cfg.visualize_control_samples = 9  # how many tst samples will be used for online visual control
 cfg.visualize_each_step = 32
 cfg.perceptual_loss_weight = 11.0
-cfg.laplace_loss_weight = 1.0
+cfg.laplace_loss_weight = 1000.0
 cfg.mse_loss_weight = 1.0
 
 # -------- SET PATH TO LOCAL DATA ---------
@@ -73,11 +73,12 @@ writer = SummaryWriter()
 
 # --------------------------- NEURAL NETS, LOSSES, OPTIMIZER & LR SCHEDULER
 
-model = neuralnet.ConvFaceDecoder(latent_dim=cfg.latent_space_dims)
+model = neuralnet.ConvFaceDecoderLarge(latent_dim=cfg.latent_space_dims)
 model = model.to(device)
 print(f" - model size: {model_size_mb(model):.3f} MB")
 
 perceptor = perceptloss.get_perceptual_loss_network(cfg.perception_net_name).to(device).eval()
+perceptor.requires_grad_(False)
 print(f" - perceptor ({cfg.perception_net_name}) size: {model_size_mb(perceptor):.3f} MB")
 
 # Loss and optimizer
