@@ -17,4 +17,6 @@ pip install -r requirements.txt
 
 [./train_naive_decoder](./train_naive_decoder) - tools to train template to photo decoder
 
+[./train_adapter_for_instantid](./train_adapter_for_instantid) - tools to train adapter for instantid control-net (stable diffusion for face from vector reconstruction)
+
 [./researches](./researches) - some researches we have done along the way

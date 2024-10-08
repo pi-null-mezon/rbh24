@@ -19,6 +19,13 @@ Adjust config options in `./train.py`. Then run training:
 python train.py
 ```
 
+## Validation
+
+```bash
+python validate.py --set valface # it is database collected by SystemFailure (does not contain samples from glint nor webface)
+python validate.py --set glint --max_ids 1000  # test part of glint dataset
+```
+
 ### Example of training session
 
 Log of the training session for decoder_large:
@@ -72,12 +79,24 @@ Test set probes:
 ![](./artifacts/decoder_large_2nd_epoch_sample_3.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_4.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_5.png)
 ![](./artifacts/decoder_large_2nd_epoch_sample_6.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_7.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_8.png)
 
-Test set similarity check:
+Test set similarity check after 2 epoches:
 
 ```
-STATISTICS ON 1000 TEST SAMPLES FROM GLINT:
+STATISTICS ON 1143 TEST SAMPLES FROM 'valface':
+ - COSINE MIN:    0.1691
+ - COSINE MEAN:   0.5611
+ - COSINE MEDIAN: 0.5694
+ - COSINE MAX:    0.7674
+TOTAL: 164 of 1143 have cosine with genuine template greater than 0.661 >> it is 14.3 % of validation samples
+
+STATISTICS ON 1000 TEST SAMPLES FROM 'glint':
  - COSINE MIN:    0.0928
- - COSINE MEAN:   0.5295 
+ - COSINE MEAN:   0.5295
  - COSINE MEDIAN: 0.5415
  - COSINE MAX:    0.7490
+TOTAL: 98 of 1000 have cosine with genuine template greater than 0.661 >> it is 9.8 % of validation samples
 ```
+
+Test set similarity check after 3 epoches:
+
+TO-DO...
