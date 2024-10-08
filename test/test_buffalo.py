@@ -1,7 +1,6 @@
 import numpy as np
 import pickle
 import matplotlib.pyplot as plt
-import matplotlib.text as text
 import seaborn as sns
 from numpy.linalg import norm
 
@@ -12,8 +11,8 @@ def compute_sim(feat1, feat2):
     return sim
     
 
-new_pair1, embedding = pickle.load(open("test/open_test_embedding.pickle", "rb"))
-new_pair2, embedding2 = pickle.load(open("test/geofaces_embedding.pickle", "rb"))
+new_pair1, embedding = pickle.load(open("/2T_0/hackaton2/MakeExperiments/open_test_embedding.pickle", "rb"))
+new_pair2, embedding2 = pickle.load(open("/2T_0/hackaton2/MakeExperiments/geofaces_embedding.pickle", "rb"))
 
 new_pair = list(new_pair1.items()) + list(new_pair2.items())
 embedding.update(embedding2)
@@ -89,8 +88,6 @@ plt.xticks([(i-10)*0.1 for i in range(21)] )
 plt.title("Test set, 1849-id")
 plt.grid(color = 'black', linewidth = 0.1)
 
-ax.axvline(fmr[closest_key], color='r')
-t = text.Text(0.02, 0.5, str(fnmr[closest_key]), ha='left', va='bottom', axes=ax)
-ax.add_artist(t)
+ax.axvline(fnmr[closest_key], color='r')
 
 plt.savefig('test/result/fnmr_fmr.png')
