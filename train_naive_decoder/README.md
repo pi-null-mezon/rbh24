@@ -47,9 +47,9 @@ TEST:
 
 Test set probes:
 
-![](./artifacts/decoder_large_2nd_epoch_sample_0.png)   ![](./artifacts/decoder_large_2nd_epoch_sample_1.png)   ![](./artifacts/decoder_large_2nd_epoch_sample_2.png)
-![](./artifacts/decoder_large_2nd_epoch_sample_3.png)   ![](./artifacts/decoder_large_2nd_epoch_sample_4.png)   ![](./artifacts/decoder_large_2nd_epoch_sample_5.png)
-![](./artifacts/decoder_large_2nd_epoch_sample_6.png)   ![](./artifacts/decoder_large_2nd_epoch_sample_7.png)   ![](./artifacts/decoder_large_2nd_epoch_sample_8.png)
+![](./artifacts/decoder_large_2nd_epoch_sample_0.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_1.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_2.png)
+![](./artifacts/decoder_large_2nd_epoch_sample_3.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_4.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_5.png)
+![](./artifacts/decoder_large_2nd_epoch_sample_6.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_7.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_8.png)
 
 Test set similarity check:
 
