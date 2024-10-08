@@ -106,8 +106,8 @@ with torch.no_grad(), tqdm(total=cfg.max_samples_to_collect) as pbar:
             canvas[0:rec.shape[0], orig.shape[1]:orig.shape[1] + rec.shape[1]] = rec
             info = f"cosine: {cosine:.3f}"
             color = (0, 255, 0) if cosine > cfg.buffalo_cosine_threshold else (0, 0, 255)
-            cv2.putText(canvas, info, (5, 15), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 1, cv2.LINE_AA)
-            cv2.putText(canvas, info, (4, 14), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 1, cv2.LINE_AA)
+            cv2.putText(canvas, info, (5, 19), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 1, cv2.LINE_AA)
+            cv2.putText(canvas, info, (4, 18), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 1, cv2.LINE_AA)
             cv2.imshow("probe", canvas)
             cv2.waitKey(cfg.visualize_ms)
         pbar.update(1)

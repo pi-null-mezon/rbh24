@@ -79,7 +79,7 @@ Test set probes:
 ![](./artifacts/decoder_large_2nd_epoch_sample_3.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_4.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_5.png)
 ![](./artifacts/decoder_large_2nd_epoch_sample_6.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_7.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_8.png)
 
-Test set similarity check after 2 epoches:
+Test set similarity check after 2 epochs:
 
 ```
 STATISTICS ON 1143 TEST SAMPLES FROM 'valface':
@@ -97,6 +97,20 @@ STATISTICS ON 1000 TEST SAMPLES FROM 'glint':
 TOTAL: 98 of 1000 have cosine with genuine template greater than 0.661 >> it is 9.8 % of validation samples
 ```
 
-Test set similarity check after 3 epoches:
+Test set similarity check after 3 epochs:
 
-TO-DO...
+```
+STATISTICS ON 1143 TEST SAMPLES FROM 'valface':
+ - COSINE MIN:    0.1489
+ - COSINE MEAN:   0.5839
+ - COSINE MEDIAN: 0.5991
+ - COSINE MAX:    0.7771
+TOTAL: 255 of 1143 have cosine with genuine template greater than 0.661 >> it is 22.3 % of validation samples
+
+STATISTICS ON 1000 TEST SAMPLES FROM 'glint':
+ - COSINE MIN:    0.0776
+ - COSINE MEAN:   0.5524
+ - COSINE MEDIAN: 0.5715
+ - COSINE MAX:    0.7910
+TOTAL: 174 of 1000 have cosine with genuine template greater than 0.661 >> it is 17.4 % of validation samples
+```
