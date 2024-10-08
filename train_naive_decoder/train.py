@@ -42,6 +42,7 @@ cfg.visualize_each_step = 32
 cfg.perceptual_loss_weight = 11.0
 cfg.laplace_loss_weight = 1000.0
 cfg.mse_loss_weight = 1.0
+cfg.max_samples_per_id = -1  # -1 means take all available
 
 # -------- SET PATH TO LOCAL DATA ---------
 
@@ -108,7 +109,8 @@ train_dataset = CustomDataSet(templates_paths=train_templates_paths,
                               mean=cfg.mean,
                               std=cfg.std,
                               swap_reb_blue=cfg.swap_red_blue,
-                              normalize_templates=cfg.normalize_templates)
+                              normalize_templates=cfg.normalize_templates,
+                              max_samples_per_id=cfg.max_samples_per_id)
 print(f"  - unique samples: {len(train_dataset.templates)}")
 train_dataloader = torch.utils.data.DataLoader(train_dataset,
                                                batch_size=cfg.batch_size,
