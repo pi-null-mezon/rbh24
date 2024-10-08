@@ -1,6 +1,27 @@
-# Train decoder_large
+# Training of naive decoder
 
-Log of the training session:
+Here you can find training scripts and some validation results/artifacts for naive decoder training.
+
+Basically here we have shown that several millions of template+photo pairs is enough to train decoder that will 
+produce synth faces that can surpass cosine similarity threshold for insightface/buffalo_l.     
+
+### Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+### Run
+
+Adjust config options in `./train.py`. Then run training:
+
+```bash
+python train.py
+```
+
+### Example of training session
+
+Log of the training session for decoder_large:
 ```
  - mean: [0.485, 0.456, 0.406]
  - std: [0.229, 0.224, 0.225]
@@ -56,7 +77,7 @@ Test set similarity check:
 ```
 STATISTICS ON 1000 TEST SAMPLES FROM GLINT:
  - COSINE MIN:    0.0928
- - COSINE MEAN:   0.5295
+ - COSINE MEAN:   0.5295 
  - COSINE MEDIAN: 0.5415
  - COSINE MAX:    0.7490
 ```
