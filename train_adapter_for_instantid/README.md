@@ -10,14 +10,24 @@ Reasoning:
 
 The visualization of the transition to a new basis in 3D:
 
-![img.png](images/transition2new_basis.png)
+![img.png](artifacts/figures/transition2new_basis.png)
 
 ## Key results
 
-* Single Linear layer is enough to make a transition from buffalo_l features space to antelope_v2 features space and achieve metrics average MSE= & average_cos = COS= 
-* 10k persons with single photo is enough to generate adapted vectors close to directly extracted vectors 
+* Single Linear layer is enough to make a transition from buffalo_l features space to antelope_v2 features space 
+* 10k persons with single photo guarantees the generation of adapted vectors close to directly extracted vectors
+* 1k persons with single photo is enough to generate some percent of adapted vectors close to directly extracted vectors
 
-![img.png](images/img.png)
+| N persons | N vectors | mean MSE | mean COS |
+|-----------|-----------|----------|----------|
+| 180k      | 8.6m      | 0.19     | 0.9      |
+| 100k      | 100k      | 0.19     | 0.9      |
+| 10k       | 10k       | 0.20     | 0.9      |
+| 1k        | 1k        | 0.39     | 0.82     |
+| 100       | 100       | 0.83     | 0.47     |
+
+
+![img.png](artifacts/figures/img.png)
 
 
 ## Results preview
