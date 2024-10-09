@@ -2,11 +2,23 @@
 
 Here we explore of how to train adapter for stable diffusion for face from biometric vector reconstruction
 
-## Installation
+Reasoning:
 
-```
-TO DO ...
-```
+1. there is a high quality and open source InstanceID model to generate faces from antelope_v2 feature vector
+2. we have the restriction for attacked model (buffalo_l)
+3. we can train buffalo_l to antelope_v2 feature mapper, and if it's quality will be high enough, we will be able to reconstruct similar face from such mapped feature vector
+
+The visualization of the transition to a new basis in 3D:
+
+![img.png](images/transition2new_basis.png)
+
+## Key results
+
+* Single Linear layer is enough to make a transition from buffalo_l features space to antelope_v2 features space and achieve metrics average MSE= & average_cos = COS= 
+* 10k persons with single photo is enough to generate adapted vectors close to directly extracted vectors 
+
+![img.png](images/img.png)
+
 
 ## Results preview
 
