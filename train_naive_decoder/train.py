@@ -30,7 +30,7 @@ cfg.num_epochs = 10
 cfg.lr_scheduler = "Cosine"  # "StepPlateau"
 cfg.perception_net_name = 'vgg11'
 cfg.latent_space_dims = 512        # as features size for insightface/buffalo_l is
-cfg.max_lr = 0.002
+cfg.max_lr = 0.001
 cfg.min_lr = 0.00001
 cfg.max_grad_norm = 10.0
 cfg.augment = False
@@ -43,6 +43,7 @@ cfg.perceptual_loss_weight = 11.0
 cfg.laplace_loss_weight = 1000.0
 cfg.mse_loss_weight = 1.0
 cfg.max_samples_per_id = -1  # -1 means take all available
+cfg.pretrained_checkpoint = './weights/buffalo_decoder_large_on_vgg11_3epochs.pth'
 
 # -------- SET PATH TO LOCAL DATA ---------
 
@@ -74,7 +75,11 @@ writer = SummaryWriter()
 
 # --------------------------- NEURAL NETS, LOSSES, OPTIMIZER & LR SCHEDULER
 
-model = neuralnet.ConvFaceDecoderLarge(latent_dim=cfg.latent_space_dims)
+if cfg.pretrained_checkpoint:
+    model = torch.load(cfg.pretrained_checkpoint)
+else:
+    model = neuralnet.ConvFaceDecoderLarge(latent_dim=cfg.latent_space_dims)
+
 model = model.to(device)
 print(f" - model size: {model_size_mb(model):.3f} MB")
 
