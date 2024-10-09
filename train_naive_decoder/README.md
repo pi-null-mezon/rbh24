@@ -73,7 +73,7 @@ TEST:
 ...
 ```
 
-Test set probes:
+Test set probes 2nd epoch:
 
 ![](./artifacts/decoder_large_2nd_epoch_sample_0.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_1.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_2.png)
 ![](./artifacts/decoder_large_2nd_epoch_sample_3.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_4.png)      ![](./artifacts/decoder_large_2nd_epoch_sample_5.png)
@@ -113,4 +113,46 @@ STATISTICS ON 1000 TEST SAMPLES FROM 'glint':
  - COSINE MEDIAN: 0.5715
  - COSINE MAX:    0.7910
 TOTAL: 174 of 1000 have cosine with genuine template greater than 0.661 >> it is 17.4 % of validation samples
+```
+
+Test set probes 2nd epoch:
+
+![](./artifacts/decoder_large_4th_epoch_sample_0.png)      ![](./artifacts/decoder_large_4th_epoch_sample_1.png)      ![](./artifacts/decoder_large_4th_epoch_sample_2.png)
+![](./artifacts/decoder_large_4th_epoch_sample_3.png)      ![](./artifacts/decoder_large_4th_epoch_sample_4.png)      ![](./artifacts/decoder_large_4th_epoch_sample_5.png)
+![](./artifacts/decoder_large_4th_epoch_sample_6.png)      ![](./artifacts/decoder_large_4th_epoch_sample_7.png)      ![](./artifacts/decoder_large_4th_epoch_sample_8.png)
+
+Test set similarity check after 4 epochs:
+
+```
+STATISTICS ON 1143 TEST SAMPLES FROM 'valface':
+ - COSINE MIN:    0.1136
+ - COSINE MEAN:   0.6043
+ - COSINE MEDIAN: 0.6169
+ - COSINE MAX:    0.8093
+TOTAL: 356 of 1143 have cosine with genuine template greater than 0.661 >> it is 31.1 % of validation samples
+
+STATISTICS ON 1000 TEST SAMPLES FROM 'glint':
+ - COSINE MIN:    0.0984
+ - COSINE MEAN:   0.5725
+ - COSINE MEDIAN: 0.5900
+ - COSINE MAX:    0.8015
+TOTAL: 231 of 1000 have cosine with genuine template greater than 0.661 >> it is 23.1 % of validation samples
+```
+
+Test set similarity check after 5 epochs:
+
+```
+STATISTICS ON 1143 TEST SAMPLES FROM 'valface':
+ - COSINE MIN:    0.1732
+ - COSINE MEAN:   0.6087
+ - COSINE MEDIAN: 0.6222
+ - COSINE MAX:    0.8265
+TOTAL: 391 of 1143 have cosine with genuine template greater than 0.661 >> it is 34.2 % of validation samples
+
+STATISTICS ON 1000 TEST SAMPLES FROM 'glint':
+ - COSINE MIN:    0.1081
+ - COSINE MEAN:   0.5797
+ - COSINE MEDIAN: 0.5944
+ - COSINE MAX:    0.8080
+TOTAL: 253 of 1000 have cosine with genuine template greater than 0.661 >> it is 25.3 % of validation samples
 ```
