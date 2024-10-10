@@ -45,14 +45,24 @@ This adapter was trained on only 4K of template pairs
 ![](./artifacts/adapter_HQ_4000_sample_9.png)      ![](./artifacts/adapter_HQ_4000_sample_10.png)      ![](./artifacts/adapter_HQ_4000_sample_11.png)
 
 ```
+STATISTICS ON 1143 TEST SAMPLES FROM 'valface':
+ - COSINE MIN:    -0.0550
+ - COSINE MEAN:   0.7127
+ - COSINE MEDIAN: 0.7365
+ - COSINE MAX:    0.8553
+TOTAL: 870 of 1143 have cosine with genuine template greater than 0.661 >> it is 76.1 % of validation samples
+
 STATISTICS ON 1000 TEST SAMPLES FROM 'glint':
  - COSINE MIN:    0.2915
  - COSINE MEAN:   0.6311
  - COSINE MEDIAN: 0.6424
  - COSINE MAX:    0.8479
 TOTAL: 434 of 1000 have cosine with genuine template greater than 0.661 >> it is 43.4 % of validation samples
-
 ```
+
+## Validation of adapter_100K
+
+IN PROGRESS...
 
 ## How to run training
 
