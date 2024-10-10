@@ -51,7 +51,7 @@ plt.title("Test set, 1849-id")
 plt.grid(color = 'black', linewidth = 0.1)
 
 plt.legend(title='Type verification', loc='upper left', labels=['diff ', 'same '])
-plt.savefig('test/result/cos_sim_dist.png')
+plt.savefig('result/cos_sim_dist.png')
 
 same_sim = np.array(same_pair)
 diff_sim = np.array(diff_pair)
@@ -69,9 +69,19 @@ for t in thresholds:
     fnmr.append(tmp_fnmr)
     fmr.append(tmp_fmr)
 
-closest_key = np.argmin([abs(i - 1e-6) for i in fmr])
+closest_key = np.argmin([abs(i - 1e-4) for i in fmr])
+closest_key1 = np.argmin([abs(i - 1e-5) for i in fmr])
+closest_key2 = np.argmin([abs(i - 1e-6) for i in fmr])
 print(fmr[closest_key])
+print(fmr[closest_key1])
+print(fmr[closest_key2])
 print(fnmr[closest_key])
+print(fnmr[closest_key1])
+print(fnmr[closest_key2])
+print(thresholds[closest_key])
+print(thresholds[closest_key1])
+print(thresholds[closest_key2])
+
 
 fig, ax = plt.subplots(figsize=(11,5))
 
@@ -89,6 +99,8 @@ plt.xticks([(i-10)*0.1 for i in range(21)] )
 plt.title("Test set, 1849-id")
 plt.grid(color = 'black', linewidth = 0.1)
 
-ax.axvline(fnmr[closest_key], color='r')
+ax.axvline(thresholds[closest_key], color='r')
+ax.axvline(thresholds[closest_key1], color='r')
+ax.axvline(thresholds[closest_key2], color='r')
 
-plt.savefig('test/result/fnmr_fmr.png')
+plt.savefig('result/fnmr_fmr.png')
