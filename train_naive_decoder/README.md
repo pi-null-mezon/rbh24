@@ -115,12 +115,6 @@ STATISTICS ON 1000 TEST SAMPLES FROM 'glint':
 TOTAL: 174 of 1000 have cosine with genuine template greater than 0.661 >> it is 17.4 % of validation samples
 ```
 
-Test set probes 2nd epoch:
-
-![](./artifacts/decoder_large_4th_epoch_sample_0.png)      ![](./artifacts/decoder_large_4th_epoch_sample_1.png)      ![](./artifacts/decoder_large_4th_epoch_sample_2.png)
-![](./artifacts/decoder_large_4th_epoch_sample_3.png)      ![](./artifacts/decoder_large_4th_epoch_sample_4.png)      ![](./artifacts/decoder_large_4th_epoch_sample_5.png)
-![](./artifacts/decoder_large_4th_epoch_sample_6.png)      ![](./artifacts/decoder_large_4th_epoch_sample_7.png)      ![](./artifacts/decoder_large_4th_epoch_sample_8.png)
-
 Test set similarity check after 4 epochs:
 
 ```
@@ -138,6 +132,13 @@ STATISTICS ON 1000 TEST SAMPLES FROM 'glint':
  - COSINE MAX:    0.8015
 TOTAL: 231 of 1000 have cosine with genuine template greater than 0.661 >> it is 23.1 % of validation samples
 ```
+
+Test set probes 5th epoch:
+
+![](./artifacts/decoder_large_4th_epoch_sample_0.png)      ![](./artifacts/decoder_large_4th_epoch_sample_1.png)      ![](./artifacts/decoder_large_4th_epoch_sample_2.png)
+![](./artifacts/decoder_large_4th_epoch_sample_3.png)      ![](./artifacts/decoder_large_4th_epoch_sample_4.png)      ![](./artifacts/decoder_large_4th_epoch_sample_5.png)
+![](./artifacts/decoder_large_4th_epoch_sample_6.png)      ![](./artifacts/decoder_large_4th_epoch_sample_7.png)      ![](./artifacts/decoder_large_4th_epoch_sample_8.png)
+
 
 Test set similarity check after 5 epochs:
 

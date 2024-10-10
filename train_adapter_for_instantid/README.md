@@ -44,6 +44,16 @@ This adapter was trained on only 4K of template pairs
 ![](./artifacts/adapter_HQ_4000_sample_6.png)      ![](./artifacts/adapter_HQ_4000_sample_7.png)      ![](./artifacts/adapter_HQ_4000_sample_8.png)
 ![](./artifacts/adapter_HQ_4000_sample_9.png)      ![](./artifacts/adapter_HQ_4000_sample_10.png)      ![](./artifacts/adapter_HQ_4000_sample_11.png)
 
+```
+STATISTICS ON 1000 TEST SAMPLES FROM 'glint':
+ - COSINE MIN:    0.2915
+ - COSINE MEAN:   0.6311
+ - COSINE MEDIAN: 0.6424
+ - COSINE MAX:    0.8479
+TOTAL: 434 of 1000 have cosine with genuine template greater than 0.661 >> it is 43.4 % of validation samples
+
+```
+
 ## How to run training
 
 ```bash
@@ -55,7 +65,7 @@ And press RUN button
 
 ## How to run validation
 
-!Before run validation, prepare machine with CUDA12 compatible GPU with at least 12GB of VRAM (tested: RTX3090, RTX4090)! 
+!Prepare machine with CUDA12 compatible GPU and at least 24GB of VRAM (tested: RTX3090, RTX4090)! 
 
 1. Install [InstantID](https://github.com/instantX-research/InstantID) according to repo instructions
 2. Copy `validate.py` and `tools.py` into root of InstantID installation folder
@@ -65,3 +75,17 @@ And press RUN button
 python validate.py --set valface # it is database collected by SystemFailure (does not contain samples from glint nor webface)
 python validate.py --set glint --max_ids 1000  # test part of glint dataset
 ```
+
+## Demo
+
+Demo allows you to reconstruct face photo from two types of input:
+
+ - insighface/buffalo_l template saved as .pkl (numpy array with single (512,) vector of np.float) file or .b64 file (base64 encoded string)
+ - photo of a face (insighface/buffalo_l will try to extract template from this photo before reconstruction)
+
+```bash
+python demo.py --input source_template.pkl --output ./output.jpg
+```
+
+So, reconstructed photo will be saved in --output value
+

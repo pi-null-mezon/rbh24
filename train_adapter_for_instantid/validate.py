@@ -18,7 +18,7 @@ argparser.add_argument("--target_pose_photo", default="./examples/portrait1280p.
 args = argparser.parse_args()
 
 adapter_name = args.adapter.rsplit('.onnx', 1)[0].rsplit('/', 1)[1]
-artifacts_path = os.path.join('./validation/', adapter_name)
+artifacts_path = os.path.join('./validation/', f"{adapter_name}_vs_{args.set}")
 if os.path.exists(artifacts_path):
     print(f"It seems this adapter already validated. Delete artifacts in '{artifacts_path}' if you want to revalidate")
     exit()
@@ -64,8 +64,6 @@ if cfg.max_samples_to_collect == -1:
     cfg.max_samples_to_collect = len(test_dataset)
 
 test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=2)
-
-artifacts_path = os.path.join('./validation/', args.adapter.rsplit('.onnx', 1)[0].rsplit('/', 1)[1])
 
 print("MEASUREMENTS COLLECTION - please wait...", flush=True)
 cosines = []

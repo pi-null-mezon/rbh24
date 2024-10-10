@@ -13,10 +13,10 @@ pip install -r requirements.txt
 
 ### Repo structure
 
-[./templatesgen](./templatesgen) - scripts to make photo + biometric templates pairs
+1. [./templatesgen](./templatesgen) - scripts to make photo + biometric templates pairs
 
-[./train_naive_decoder](./train_naive_decoder) - tools to train template to photo decoder
+2. [./train_naive_decoder](./train_naive_decoder) - tools to train template to photo decoder
 
-[./train_adapter_for_instantid](./train_adapter_for_instantid) - tools to train adapter for instantid control-net (stable diffusion for face from vector reconstruction)
+3. [./train_adapter_for_instantid](./train_adapter_for_instantid) - tools to train adapter for instantid
 
-[./researches](./researches) - some researches we have done along the way
+4. [./researches](./researches) - some researches we have done along the way
