@@ -20,3 +20,5 @@ pip install -r requirements.txt
 3. [./train_adapter_for_instantid](./train_adapter_for_instantid) - tools to train adapter for instantid
 
 4. [./researches](./researches) - some researches we have done along the way
+
+5. [./protection](./protection) - how to protect biometric templates?
