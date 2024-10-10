@@ -5,7 +5,7 @@ Here you can find some of our researches/insights that we have collected along t
 
 ## insightface/buffalo_l
 
-We have measured cosine (0.661) for FMR=1E-6 on independent dataset (nor glint or webfaces):  
+We have measured cosine (0.315, 0.386, 0.661) for FMR=1E-4, FMR=1E-5, FMR=1E-6 on independent dataset (nor glint or webfaces):  
 
 ![](./result/fnmr_fmr.png)
 
