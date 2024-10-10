@@ -5,6 +5,7 @@ from tools import initialize_onnx_session, CustomDataSet, extract_template_from_
     initialize_instantid_session, reconstruct_face_from_template, prepare_target_pose_kps, crop_square_roi, bbox_upscale
 import numpy as np
 import torch
+import pickle
 from argparse import ArgumentParser
 from insightface.app import FaceAnalysis
 
@@ -16,13 +17,21 @@ argparser.add_argument("--adapter", default="./models/buffalo2atelope_adapter_an
 argparser.add_argument("--target_pose_photo", default="./examples/portrait1280p.jpg", help="photo to copy face pose")
 args = argparser.parse_args()
 
+adapter_name = args.adapter.rsplit('.onnx', 1)[0].rsplit('/', 1)[1]
+artifacts_path = os.path.join('./validation/', adapter_name)
+if os.path.exists(artifacts_path):
+    print(f"It seems this adapter already validated. Delete artifacts in '{artifacts_path}' if you want to revalidate")
+    exit()
+else:
+    os.makedirs(artifacts_path)
+
 cfg = edict()
 cfg.buffalo_cosine_threshold = 0.661  # measured for FMR 1E-6
 cfg.visualize = True
-cfg.visualize_ms = 40  # 0 - wait key press
+cfg.visualize_ms = 30  # 0 - wait key press
 cfg.size_for_visualization = (256, 256)
-cfg.target_reconstruction_size = (640, 640)
-cfg.reconstruction_iterations = 16  # low values produce low quality results, high values took too long time
+cfg.target_reconstruction_size = (512, 512)
+cfg.reconstruction_iterations = 15  # low values produce low quality results, high values took too long time
 cfg.max_samples_to_collect = args.max_ids  # we will take 1 sample per id
 
 buffalo = FaceAnalysis(name='buffalo_l', root='./', providers=['CUDAExecutionProvider', 'CPUExecutionProvider'])
@@ -56,9 +65,11 @@ if cfg.max_samples_to_collect == -1:
 
 test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=2)
 
+artifacts_path = os.path.join('./validation/', args.adapter.rsplit('.onnx', 1)[0].rsplit('/', 1)[1])
+
 print("MEASUREMENTS COLLECTION - please wait...", flush=True)
 cosines = []
-for template, photo in test_dataloader:
+for template, photo, filename in test_dataloader:
     ot = template.squeeze(0).cpu().numpy()
     face_not_detected = True
     while face_not_detected:
@@ -72,10 +83,16 @@ for template, photo in test_dataloader:
         if info is not None:
             rnt = info['embedding'] / np.linalg.norm(info['embedding'])
             face_not_detected = False
+
     ont = ot / np.linalg.norm(ot)
     ont = ont.squeeze(0)
     cosine = np.dot(rnt, ont)
     cosines.append(cosine)
+
+    # save generation locally
+    _id = filename[0].split('/', 1)[0]
+    os.makedirs(os.path.join(artifacts_path, _id))
+    pilimg.save(f'{os.path.join(artifacts_path, filename[0])}.jpg')
 
     if cfg.visualize:
         orig = photo.squeeze(0).cpu().numpy()
@@ -88,20 +105,25 @@ for template, photo in test_dataloader:
         canvas[0:orig.shape[0], 0:orig.shape[1]] = orig
         canvas[0:rec.shape[0], orig.shape[1]:orig.shape[1] + rec.shape[1]] = rec
         info = f"cosine: {cosine:.3f}"
-        color = (0, 255, 0) if cosine > cfg.buffalo_cosine_threshold else (0, 0, 255)
-        cv2.putText(canvas, info, (5, 19), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 1, cv2.LINE_AA)
-        cv2.putText(canvas, info, (4, 18), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 1, cv2.LINE_AA)
+        color = (0, 255, 0) if cosine > cfg.buffalo_cosine_threshold else (0, 55, 255)
+        cv2.putText(canvas, info, (6, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2, cv2.LINE_AA)
+        cv2.putText(canvas, info, (4, 18), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2, cv2.LINE_AA)
         cv2.imshow("probe", canvas)
         cv2.waitKey(cfg.visualize_ms)
     if len(cosines) >= cfg.max_samples_to_collect:
         break
 
-print(f"STATISTICS ON {len(cosines)} TEST SAMPLES FROM '{args.set}':")
 cosines = np.array(cosines)
-print(f" - COSINE MIN:    {cosines.min().item():.4f}")
-print(f" - COSINE MEAN:   {cosines.mean().item():.4f}")
-print(f" - COSINE MEDIAN: {np.median(cosines).item():.4f}")
-print(f" - COSINE MAX:    {cosines.max().item():.4f}")
+with open(os.path.join(artifacts_path, f'{adapter_name}.cosines.pkl'), 'wb') as o_f:
+    pickle.dump(cosines, o_f)
+line = f"STATISTICS ON {len(cosines)} TEST SAMPLES FROM '{args.set}':" \
+       f"\n - COSINE MIN:    {cosines.min().item():.4f}" \
+       f"\n - COSINE MEAN:   {cosines.mean().item():.4f}" \
+       f"\n - COSINE MEDIAN: {np.median(cosines).item():.4f}" \
+       f"\n - COSINE MAX:    {cosines.max().item():.4f}"
 tp = np.sum(cosines > cfg.buffalo_cosine_threshold)
-print(f"TOTAL: {tp} of {len(cosines)} have cosine with genuine template greater than {cfg.buffalo_cosine_threshold:.3f}"
-      f" >> it is {100 * tp / len(cosines):.1f} % of validation samples")
+line += f"\nTOTAL: {tp} of {len(cosines)} have cosine with genuine template greater than {cfg.buffalo_cosine_threshold:.3f}" \
+        f" >> it is {100 * tp / len(cosines):.1f} % of validation samples"
+with open(os.path.join(artifacts_path, f'{adapter_name}.validation.md'), 'w') as o_f:
+    o_f.write(line)
+print(line)

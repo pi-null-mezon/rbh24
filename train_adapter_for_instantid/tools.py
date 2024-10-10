@@ -46,7 +46,7 @@ class CustomDataSet(Dataset):
         template = self.templates[idx]
         if self.normalize_templates:
             template = template / np.linalg.norm(template)
-        return template, mat
+        return template, mat, self.filenames[idx]
 
 
 def initialize_onnx_session(model_path, use_cuda=True):

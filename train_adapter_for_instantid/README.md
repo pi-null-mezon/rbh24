@@ -1,22 +1,28 @@
 # InstantID
 
-Here we explore of how to train adapter for stable diffusion for face from biometric vector reconstruction
+Here we explore of how to train adapter for stable diffusion for face from biometric vector reconstruction.
 
-Reasoning:
+[InstantID](https://github.com/instantX-research/InstantID) is control-net for stable diffusion image generator. It was 
+trained specifically to condition image generation by face similarity score for `insightface/antelopev2`.
 
-1. there is a high quality and open source InstanceID model to generate faces from antelope_v2 feature vector
-2. we have the restriction for attacked model (buffalo_l)
-3. we can train buffalo_l to antelope_v2 feature mapper, and if it's quality will be high enough, we will be able to reconstruct similar face from such mapped feature vector
+## Reasoning
+
+1. there is a high quality and open source InstanceID model to generate faces from `insightface/antelopev2` feature vector
+2. we have the restriction for attacked model (`insightface/buffalo_l`)
+3. we can train `insightface/buffalo_l` to `insightface/antelopev2` feature mapper, and if it's quality will be high enough, we will be able to reconstruct similar face from such mapped feature vector
 
 The visualization of the transition to a new basis in 3D:
 
-![img.png](artifacts/figures/transition2new_basis.png)
+![](./artifacts/figures/transition2new_basis.png)
 
 ## Key results
 
-* Single Linear layer is enough to make a transition from buffalo_l features space to antelope_v2 features space 
+* We have used ordinary least squares (OLS) to find transformation matrix from `insightface/buffalo_l` features space to `insightface/antelopev2` features space  
+* Single Linear layer is enough to make a transition from `insightface/buffalo_l` features space to `insightface/antelopev2` features space 
 * 10k persons with single photo guarantees the generation of adapted vectors close to directly extracted vectors
 * 1k persons with single photo is enough to generate some percent of adapted vectors close to directly extracted vectors
+
+OSE (ordinal square error) on training data:
 
 | N persons | N vectors | mean MSE | mean COS |
 |-----------|-----------|----------|----------|
@@ -27,21 +33,22 @@ The visualization of the transition to a new basis in 3D:
 | 100       | 100       | 0.83     | 0.47     |
 
 
-![img.png](artifacts/figures/img.png)
+![](artifacts/figures/img.png)
 
+## Results preview for adapter_HQ_4000 (yes it was trained in 4000 ids - amazing!)
 
-## Results preview
+![](./artifacts/adapter_HQ_4000_sample_0.png)      ![](./artifacts/adapter_HQ_4000_sample_1.png)      ![](./artifacts/adapter_HQ_4000_sample_2.png)
+![](./artifacts/adapter_HQ_4000_sample_3.png)      ![](./artifacts/adapter_HQ_4000_sample_4.png)      ![](./artifacts/adapter_HQ_4000_sample_5.png)
+![](./artifacts/adapter_HQ_4000_sample_6.png)      ![](./artifacts/adapter_HQ_4000_sample_7.png)      ![](./artifacts/adapter_HQ_4000_sample_8.png)
+![](./artifacts/adapter_HQ_4000_sample_9.png)      ![](./artifacts/adapter_HQ_4000_sample_10.png)      ![](./artifacts/adapter_HQ_4000_sample_11.png)
 
-Adapter `buffalo2atelope_adapler_analytical.onnx`
+## How to run validation
 
-cosine: 0.673
-![77de0ef.jpg](artifacts%2Fik%2Fportrait%2F77de0ef.jpg)   
+1. Install [InstantID](https://github.com/instantX-research/InstantID) according to repo instructions
+2. Copy `validate.py` and `tools.py` into root of InstantID installation folder
+3. Run validation:
 
-cosine: 0.730
-![80948f8.jpg](artifacts%2Fka%2Fportrait%2F80948f8.jpg)
-
-cosine: 0.711
-![079487b.jpg](artifacts%2Fkd%2Fportrait%2F079487b.jpg)
-
-cosine: 0.745
-![71fa9fe.jpg](artifacts%2Fat%2Fportrait%2F71fa9fe.jpg)
+```bash 
+python validate.py --set valface # it is database collected by SystemFailure (does not contain samples from glint nor webface)
+python validate.py --set glint --max_ids 1000  # test part of glint dataset
+```
