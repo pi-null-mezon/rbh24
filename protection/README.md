@@ -34,3 +34,11 @@ pros:
 cons:
 
  - classification accuracy could be low
+
+
+## Known approaches
+
+What literature says?
+
+[Cancelable Biometrics: a comprehensive survey](https://www.researchgate.net/publication/336386976_Cancelable_Biometrics_a_comprehensive_survey)
+![](./figures/methods.png)
