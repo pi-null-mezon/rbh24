@@ -12,7 +12,7 @@ argparser = ArgumentParser("validation script")
 argparser.add_argument("--input", default="./input.jpg", help="source file to reconstruct (could be .jpg, .pkl or .b64)")
 argparser.add_argument("--adapter", default="./models/buffalo2antelope_adapter_HQ_4000.onnx",
                        help="weights of adapter")
-argparser.add_argument("--target_pose_photo", default="./examples/portrait1280p.jpg", help="photo to copy face pose")
+argparser.add_argument("--target_pose_photo", default="./artifacts/portrait1280p.jpg", help="photo to copy face pose")
 argparser.add_argument("--output", default=f"./output.jpg", help="where to save generation result")
 args = argparser.parse_args()
 

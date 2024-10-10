@@ -87,5 +87,4 @@ Demo allows you to reconstruct face photo from two types of input:
 python demo.py --input source_template.pkl --output ./output.jpg
 ```
 
-So, reconstructed photo will be saved in --output value
-
+So, reconstructed photo will be saved in --output value. Do not forget to copy `./artifacts` and `./models` to InstatID installation folder!
