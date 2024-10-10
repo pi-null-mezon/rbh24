@@ -35,14 +35,27 @@ OSE (ordinal square error) on training data:
 
 ![](artifacts/figures/img.png)
 
-## Results preview for adapter_HQ_4000 (yes it was trained in 4000 ids - amazing!)
+## Validation of adapter_HQ_4000
+
+This adapter was trained on only 4K of template pairs
 
 ![](./artifacts/adapter_HQ_4000_sample_0.png)      ![](./artifacts/adapter_HQ_4000_sample_1.png)      ![](./artifacts/adapter_HQ_4000_sample_2.png)
 ![](./artifacts/adapter_HQ_4000_sample_3.png)      ![](./artifacts/adapter_HQ_4000_sample_4.png)      ![](./artifacts/adapter_HQ_4000_sample_5.png)
 ![](./artifacts/adapter_HQ_4000_sample_6.png)      ![](./artifacts/adapter_HQ_4000_sample_7.png)      ![](./artifacts/adapter_HQ_4000_sample_8.png)
 ![](./artifacts/adapter_HQ_4000_sample_9.png)      ![](./artifacts/adapter_HQ_4000_sample_10.png)      ![](./artifacts/adapter_HQ_4000_sample_11.png)
 
+## How to run training
+
+```bash
+pip install jupyterlab
+jupyter-lab ./buffalo2antelope_adapter.ipynb  
+```
+
+And press RUN button
+
 ## How to run validation
+
+!Before run validation, prepare machine with CUDA12 compatible GPU with at least 12GB of VRAM (tested: RTX3090, RTX4090)! 
 
 1. Install [InstantID](https://github.com/instantX-research/InstantID) according to repo instructions
 2. Copy `validate.py` and `tools.py` into root of InstantID installation folder
