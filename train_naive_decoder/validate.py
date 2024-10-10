@@ -1,6 +1,6 @@
 import os
 from easydict import EasyDict as edict
-from tools import image2tensor, tensor2image, initialize_onnx_session, make_onnx_inference, CustomDataSet
+from tools import tensor2image, initialize_onnx_session, CustomDataSet, extract_template_from_synth_image
 from tqdm import tqdm
 import numpy as np
 import torch
@@ -32,22 +32,7 @@ decoder = torch.load('./weights/_tmp_buffalo_decoder_large_on_vgg11.pth')
 decoder.to(device)
 decoder.eval()
 
-cfg.buffalo_size = (112, 112)
-cfg.buffalo_mean = 3 * [127.5 / 255]
-cfg.buffalo_std = 3 * [127.5 / 255]
-cfg.buffalo_swap_red_blue = True
-
 buffalo = initialize_onnx_session('../models/buffalo_l/w600k_r50.onnx', use_cuda=torch.cuda.is_available())
-
-
-def extract_temlpate_from_synth_image(img, onnx_session, normalize):
-    resized_img = cv2.resize(img, cfg.buffalo_size, interpolation=cv2.INTER_LINEAR)
-    tensor = image2tensor(resized_img, cfg.buffalo_mean, cfg.buffalo_std, cfg.buffalo_swap_red_blue)
-    tensor = np.expand_dims(tensor, axis=0)
-    template = make_onnx_inference(onnx_session, tensor)
-    if normalize:
-        template = template / np.linalg.norm(template)
-    return template
 
 local_data_path = f"/home/{os.getlogin()}/Fastdata"
 if args.set == 'glint':
@@ -89,7 +74,7 @@ with torch.no_grad(), tqdm(total=cfg.max_samples_to_collect) as pbar:
                            mean=cfg.mean,
                            std=cfg.std,
                            swap_red_blue=cfg.swap_red_blue)
-        snt = extract_temlpate_from_synth_image(rec, buffalo, normalize=True)
+        snt = extract_template_from_synth_image(rec, buffalo, normalize=True)
         cosine = np.dot(ont.squeeze(0), snt.squeeze(0)).item()
         cosines.append(cosine)
         if cfg.visualize:
@@ -105,9 +90,9 @@ with torch.no_grad(), tqdm(total=cfg.max_samples_to_collect) as pbar:
             canvas[0:orig.shape[0], 0:orig.shape[1]] = orig
             canvas[0:rec.shape[0], orig.shape[1]:orig.shape[1] + rec.shape[1]] = rec
             info = f"cosine: {cosine:.3f}"
-            color = (0, 255, 0) if cosine > cfg.buffalo_cosine_threshold else (0, 0, 255)
-            cv2.putText(canvas, info, (5, 19), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 1, cv2.LINE_AA)
-            cv2.putText(canvas, info, (4, 18), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 1, cv2.LINE_AA)
+            color = (0, 255, 0) if cosine > cfg.buffalo_cosine_threshold else (0, 55, 255)
+            cv2.putText(canvas, info, (6, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2, cv2.LINE_AA)
+            cv2.putText(canvas, info, (4, 18), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2, cv2.LINE_AA)
             cv2.imshow("probe", canvas)
             cv2.waitKey(cfg.visualize_ms)
         pbar.update(1)

@@ -173,3 +173,25 @@ def initialize_onnx_session(model_path, use_cuda=True):
 def make_onnx_inference(session, input_data):
     results = session.run(None, {session.get_inputs()[0].name: input_data})
     return results[0]
+
+
+def extract_template_from_image(image, fa_model):
+    info = fa_model.get(cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
+    if len(info) > 0:
+        info = sorted(info, key=lambda x: (x['bbox'][2] - x['bbox'][0]) * (x['bbox'][3] - x['bbox'][1]))[-1]  # biggest one
+        return info
+    return None
+
+
+def extract_template_from_synth_image(img, buffalo_onnx_session, normalize):
+    resized_img = cv2.resize(img, (112, 112), interpolation=cv2.INTER_LINEAR)
+    tensor = image2tensor(resized_img, mean=3 * [127.5 / 255], std=3 * [127.5 / 255], swap_red_blue=True)
+    tensor = np.expand_dims(tensor, axis=0)
+    template = make_onnx_inference(buffalo_onnx_session, tensor)
+    if normalize:
+        template = template / np.linalg.norm(template)
+    return template
+
+
+def torch2numpy(tensor):
+    return tensor.detach().cpu().numpy() if tensor.requires_grad else tensor.cpu().numpy()

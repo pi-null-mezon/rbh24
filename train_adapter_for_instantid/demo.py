@@ -8,7 +8,7 @@ import pickle
 from argparse import ArgumentParser
 from insightface.app import FaceAnalysis
 
-argparser = ArgumentParser("validation script")
+argparser = ArgumentParser("Tool to convert buffalo_l templates (non normalized) into photo of the face")
 argparser.add_argument("--input", default="./input.jpg", help="source file to reconstruct (could be .jpg, .pkl or .b64)")
 argparser.add_argument("--adapter", default="./models/buffalo2antelope_adapter_HQ_4000.onnx",
                        help="weights of adapter")
