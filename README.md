@@ -3,6 +3,22 @@ RBH24
 
 This is SystemFailure solution for Russian Biometric Hackaton 2024
 
+We have shown:
+
+1. Biometric template could be reconstructed to a face photo with high cosine similarity score with original template. 
+For two test sets, for our strongest reconstruction algorithm, we have measured true positive pass rate to be 76.1 % and 43.4 % respectively.
+
+| Dataset | Name    | Description                                                             | Number of IDs | Samples per ID | Demographics                 |
+|---------|---------|-------------------------------------------------------------------------|---------------|----------------|------------------------------|
+| #1      | valface | Manually collected samples of unique persons from internet. Not famous. | 1143          | 1              | White, Black and Asian faces |
+| #2      | glint   | First 1K ids from glint dataset                                         | 1000          | 1              | White, Black and Asian faces |
+
+2. To make reconstruction algorithm relatively small data could be stollen from biometric system. Our strongest 
+reconstruction algorithm was trained only 4K high quality photo-template pairs!
+
+3. protection - in progress...
+
+
 | Original photo               | Our adapter for InstantID                                     | Our decoder                                      |
 |------------------------------|---------------------------------------------------------------|--------------------------------------------------|
 | ![](./examples/crops/ik.jpg) | ![](./examples/adapters/adapterHQ4K/ik_(cosine%200.7578).jpg) | ![](./examples/decoder/ik_(cosine%200.5390).png) |
@@ -15,6 +31,8 @@ This is SystemFailure solution for Russian Biometric Hackaton 2024
 |                              | Cosine: 0.7029                                                | Cosine: 0.6036                                   |
 
 ### Installation
+
+Prepare machine with CUDA12 compatible GPU and at least 24GB of VRAM (tested: RTX3090, RTX4090)
 
 ```bash
 python3.10 -m virtualenv ./venv

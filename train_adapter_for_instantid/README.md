@@ -39,12 +39,12 @@ OSE (ordinal square error) on training data:
 
 ## Validation of adapter_HQ_4000
 
-This adapter was trained on only 4K of template pairs
+This adapter was trained on only 4K of photo-template pairs (4K unique ids, single photo-template pair per id)
 
 ![](./artifacts/adapter_HQ_4000_sample_0.png)      ![](./artifacts/adapter_HQ_4000_sample_1.png)      ![](./artifacts/adapter_HQ_4000_sample_2.png)
 ![](./artifacts/adapter_HQ_4000_sample_3.png)      ![](./artifacts/adapter_HQ_4000_sample_4.png)      ![](./artifacts/adapter_HQ_4000_sample_5.png)
 ![](./artifacts/adapter_HQ_4000_sample_6.png)      ![](./artifacts/adapter_HQ_4000_sample_7.png)      ![](./artifacts/adapter_HQ_4000_sample_8.png)
-![](./artifacts/adapter_HQ_4000_sample_9.png)      ![](./artifacts/adapter_HQ_4000_sample_10.png)      ![](./artifacts/adapter_HQ_4000_sample_11.png)
+![](./artifacts/adapter_HQ_4000_sample_9.png)      ![](./artifacts/adapter_HQ_4000_sample_10.png)     ![](./artifacts/adapter_HQ_4000_sample_11.png)
 
 ```
 STATISTICS ON 1143 TEST SAMPLES FROM 'valface':
@@ -64,7 +64,23 @@ TOTAL: 434 of 1000 have cosine with genuine template greater than 0.661 >> it is
 
 ## Validation of adapter_100K
 
-IN PROGRESS...
+This adapter was trained on 100K of random ids (single photo-template pair per id)
+
+![](./artifacts/adapter_100K_sample_0.png)      ![](./artifacts/adapter_100K_sample_1.png)      ![](./artifacts/adapter_100K_sample_2.png)
+![](./artifacts/adapter_100K_sample_3.png)      ![](./artifacts/adapter_100K_sample_4.png)      ![](./artifacts/adapter_100K_sample_5.png)
+![](./artifacts/adapter_100K_sample_6.png)      ![](./artifacts/adapter_100K_sample_7.png)      ![](./artifacts/adapter_100K_sample_8.png)
+![](./artifacts/adapter_100K_sample_9.png)      ![](./artifacts/adapter_100K_sample_10.png)     ![](./artifacts/adapter_100K_sample_11.png)
+
+```
+STATISTICS ON 1143 TEST SAMPLES FROM 'valface':
+ - COSINE MIN:    -0.0130
+ - COSINE MEAN:   0.6970
+ - COSINE MEDIAN: 0.7388
+ - COSINE MAX:    0.8608
+TOTAL: 867 of 1143 have cosine with genuine template greater than 0.661 >> it is 75.9 % of validation samples
+
+
+```
 
 ## How to run training
 
@@ -76,8 +92,6 @@ jupyter-lab ./buffalo2antelope_adapter.ipynb
 And press RUN button
 
 ## How to run validation
-
-!Prepare machine with CUDA12 compatible GPU and at least 24GB of VRAM (tested: RTX3090, RTX4090)! 
 
 1. Install [InstantID](https://github.com/instantX-research/InstantID) according to repo instructions
 2. Copy `validate.py` and `tools.py` into root of InstantID installation folder
