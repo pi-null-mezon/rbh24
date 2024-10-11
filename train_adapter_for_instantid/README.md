@@ -5,7 +5,9 @@ Here we explore of how to train adapter for stable diffusion for face from biome
 [InstantID](https://github.com/instantX-research/InstantID) is control-net for stable diffusion image generator. It was 
 trained specifically to condition image generation by face similarity score for `insightface/antelopev2`.
 
-## Reasoning
+If you only interestedof how to run results, go to [demo section](#Demo) 
+
+## Experiment reasoning
 
 1. there is a high quality and open source InstanceID model to generate faces from `insightface/antelopev2` feature vector
 2. we have the restriction for attacked model (`insightface/buffalo_l`)
@@ -88,13 +90,15 @@ python validate.py --set glint --max_ids 1000  # test part of glint dataset
 
 ## Demo
 
-Demo allows you to reconstruct face photo from two types of input:
+Demo is a simple script that reconstructs face photos for all files in specific input directory. This files could be 
+original face photos (tebplate extraction by insightface/buffalo_l will be made) or templates in *.pkl or *.b64 formats.
+For each suitable file in input reconstructed face will be saved with the same filename plus cosine similarity with
+the original face template. Before run demo.py, download `buffalo2antelope_adapler_HQ_4K.onnx` file to local disk.
 
- - insighface/buffalo_l template saved as .pkl (numpy array with single (512,) vector of np.float) file or .b64 file (base64 encoded string)
- - photo of a face (insighface/buffalo_l will try to extract template from this photo before reconstruction)
+Link to download adapter: https://disk.yandex.ru/d/7Aq4f_V6bu1V4Q
 
 ```bash
-python demo.py --input source_template.pkl --output ./output.jpg
+python demo.py --input local_path_to_templpates_or_photos_to_reconstruct --output ./output --adapter ./models/buffalo_l_decoder_large_on_vgg11_v1.onnx
 ```
 
-So, reconstructed photo will be saved in --output value. Do not forget to copy `./artifacts` and `./models` to InstatID installation folder!
+Do not forget to copy `./artifacts` and `./models` to InstatID installation folder!

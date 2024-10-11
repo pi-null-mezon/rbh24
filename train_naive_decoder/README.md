@@ -3,7 +3,9 @@
 Here you can find training scripts and some validation results/artifacts for naive decoder training.
 
 Basically here we have shown that several millions of template+photo pairs is enough to train decoder that will 
-produce synth faces that can surpass cosine similarity threshold for insightface/buffalo_l.     
+produce synth faces that can surpass cosine similarity threshold for insightface/buffalo_l.
+
+If you only interestedof how to run results, go to [demo section](#Demo)
 
 ### Installation
 
@@ -158,12 +160,14 @@ STATISTICS ON 1000 TEST SAMPLES FROM 'glint':
 TOTAL: 253 of 1000 have cosine with genuine template greater than 0.661 >> it is 25.3 % of validation samples
 ```
 
-## How to run demo:
+## Demo:
 
 Demo is a simple script that reconstructs face photos for all files in specific input directory. This files could be 
 original face photos (tebplate extraction by insightface/buffalo_l will be made) or templates in *.pkl or *.b64 formats.
 For each suitable file in input reconstructed face will be saved with the same filename plus cosine similarity with
 the original face template. Before run demo.py, download `buffalo_l_decoder_large_on_vgg11_v1.onnx` file to local disk.
+
+Link to download decoder: https://disk.yandex.ru/d/xy4Vj5m1_Zp3jQ
 
 ```bash
 python demo.py --input local_path_to_templpates_or_photos_to_reconstruct --output ./output --decoder ./weights/buffalo_l_decoder_large_on_vgg11_v1.onnx

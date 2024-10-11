@@ -31,7 +31,7 @@ cfg.visualize = True
 cfg.visualize_ms = 30  # 0 - wait key press
 cfg.size_for_visualization = (256, 256)
 cfg.target_reconstruction_size = (512, 512)
-cfg.reconstruction_iterations = 15  # low values produce low quality results, high values took too long time
+cfg.reconstruction_iterations = 11  # low values produce low quality results, high values took too long time
 cfg.max_samples_to_collect = args.max_ids  # we will take 1 sample per id
 
 buffalo = FaceAnalysis(name='buffalo_l', root='./', providers=['CUDAExecutionProvider', 'CPUExecutionProvider'])
@@ -90,7 +90,7 @@ for template, photo, filename in test_dataloader:
     # save generation locally
     _id = filename[0].split('/', 1)[0]
     os.makedirs(os.path.join(artifacts_path, _id))
-    pilimg.save(f'{os.path.join(artifacts_path, filename[0])}.jpg')
+    pilimg.save(f'{os.path.join(artifacts_path, filename[0].rsplit(".",1)[0])}.jpg')
 
     if cfg.visualize:
         orig = photo.squeeze(0).cpu().numpy()

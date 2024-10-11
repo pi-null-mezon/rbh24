@@ -12,11 +12,11 @@ from easydict import EasyDict as edict
 
 
 argparser = ArgumentParser("Tool to convert buffalo_l templates (non normalized) into photo of the face")
-argparser.add_argument("--input", default="./input",
+argparser.add_argument("--input", default="../examples",
                        help="path to files to reconstruct (files could be .jpg, .png, .pkl or .b64)")
 argparser.add_argument("--decoder", default="./weights/buffalo_l_decoder_large_on_vgg11_v1.onnx",
                        help="weights of decoder")
-argparser.add_argument("--output", default=f"./output", help="where to save generation results")
+argparser.add_argument("--output", default=f"../examples/decoder", help="where to save generation results")
 args = argparser.parse_args()
 
 if not os.path.exists(args.input):
@@ -40,14 +40,16 @@ buffalo_fa.prepare(ctx_id=0, det_size=(640, 640))
 buffalo = initialize_onnx_session("../models/buffalo_l/w600k_r50.onnx", use_cuda=False)
 decoder = initialize_onnx_session(args.decoder, use_cuda=False)
 
+cosines = []
 for filename in [f.name for f in os.scandir(args.input) if f.is_file()]:
     ot = None
     abs_filename = os.path.join(args.input, filename)
     if '.jpg' in filename or '.png' in filename:
         source_image = cv2.imread(abs_filename, cv2.IMREAD_COLOR)
         info = extract_template_from_image(source_image, fa_model=buffalo_fa)
-        if len(info) == 0:
-            print("Can not find face on input image! Abort....")
+        if info is None:
+            print(f"Can not detect face on '{abs_filename}'! File will be skipped...")
+            continue
         ot = info['embedding']
     elif '.pkl' in filename:
         with open(args.input, 'rb') as i_f:
@@ -80,6 +82,18 @@ for filename in [f.name for f in os.scandir(args.input) if f.is_file()]:
     rnt = np.reshape(rnt, newshape=(512,))
     ont = np.reshape(ont, newshape=(512,))
     cosine = np.dot(rnt, ont)
+    cosines.append(cosine)
     print(f"For {abs_filename} we have got COSINE: {cosine:.4f}")
     abs_target_filename = os.path.join(args.output, filename.rsplit('.', 1)[0] + f"_(cosine {cosine:.4f}).png")
     cv2.imwrite(abs_target_filename, rec)
+
+if len(cosines) > 0:
+    print(f"STATISTICS ON {len(cosines)} SAMPLES FROM '{args.input}':")
+    cosines = np.array(cosines)
+    print(f" - COSINE MIN:    {cosines.min().item():.4f}")
+    print(f" - COSINE MEAN:   {cosines.mean().item():.4f}")
+    print(f" - COSINE MEDIAN: {np.median(cosines).item():.4f}")
+    print(f" - COSINE MAX:    {cosines.max().item():.4f}")
+    tp = np.sum(cosines > cfg.buffalo_cosine_threshold)
+    print(f"TOTAL: {tp} of {len(cosines)} have cosine with genuine template greater than {cfg.buffalo_cosine_threshold:.3f}"
+          f" >> it is {100*tp/len(cosines):.1f} % of enrolled samples")

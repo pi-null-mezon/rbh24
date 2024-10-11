@@ -118,10 +118,10 @@ def reconstruct_face_from_template(template, instantid_session, adapter_session,
     antelope_face_emb = make_onnx_inference(session=adapter_session, input_data=template)
     antelope_face_emb = antelope_face_emb.reshape((512,))
     image = instantid_session(
-        prompt="regular portrait, professional, 4k, highly detailed, white background, hyper-realistic",
+        prompt="regular portrait, professional, 4k, highly detailed, white background, hyper-realistic, skin, pores, wrinkles",
         negative_prompt="drawing, painting, crayon, sketch, graphite, impressionist, noisy, blurry, soft, "
                         "deformed, ugly, text, words, naked, hands, occlusion, sketch, muscules, neon, glow, "
-                        "overexposed",
+                        "overexposed, CGI",
         image_embeds=antelope_face_emb,
         image=target_kps,
         controlnet_conditioning_scale=0.9,
