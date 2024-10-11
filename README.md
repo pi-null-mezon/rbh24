@@ -3,9 +3,7 @@ RBH24
 
 This is SystemFailure solution for Russian Biometric Hackaton 2024
 
-### Reconstructed faces
-
-| Original photo               | Our InstantID adapter                                         | Our decoder                                      |
+| Original photo               | Our adapter for InstantID                                     | Our decoder                                      |
 |------------------------------|---------------------------------------------------------------|--------------------------------------------------|
 | ![](./examples/crops/ik.jpg) | ![](./examples/adapters/adapterHQ4K/ik_(cosine%200.7578).jpg) | ![](./examples/decoder/ik_(cosine%200.5390).png) |
 |                              | Cosine: 0.7578                                                | Cosine: 0.5390                                   |
