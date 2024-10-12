@@ -2,7 +2,7 @@
 
 Here you can find training scripts and some validation results/artifacts for improved decoder training.
 
-If you only interestedof how to run results, go to [demo section](#Demo)
+If you are only interested in how to run reconstruction, go to [demo section](#Demo) 
     
 ### Key idea:
 
