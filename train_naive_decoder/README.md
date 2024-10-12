@@ -172,3 +172,20 @@ Link to download decoder: https://disk.yandex.ru/d/xy4Vj5m1_Zp3jQ
 ```bash
 python demo.py --input local_path_to_templpates_or_photos_to_reconstruct --output ./output --decoder ./weights/buffalo_l_decoder_large_on_vgg11_v1.onnx
 ```
+
+To run protection demo (shows how to use photo to encrypt biometric template to protect it from reconstruction):
+
+```bash
+python protection_demo.py
+```
+
+![](./artifacts/ROC.png)
+
+```
+STATISTICS ON 1777 UNIQUE PERSONS IDENTIFICATIONS:
+ - COSINE MIN:    -0.1728
+ - COSINE MEAN:   0.0120
+ - COSINE MEDIAN: 0.0111
+ - COSINE MAX:    0.1761
+TOTAL: 0 of 1777 have cosine with genuine template greater than 0.661 >> it is 0.0 % of samples
+```

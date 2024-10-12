@@ -224,3 +224,18 @@ def extract_template_from_synth_image(img, buffalo_onnx_session, normalize):
 
 def torch2numpy(tensor):
     return tensor.detach().cpu().numpy() if tensor.requires_grad else tensor.cpu().numpy()
+
+
+def fit_img_into_rectangle(img, target_width, target_height, interpolation=cv2.INTER_LINEAR):
+    output = np.zeros((target_height, target_width, 3), dtype=np.uint8)
+    if (target_width / target_height) > (img.shape[1] / img.shape[0]):
+        height = target_height
+        width = int(target_height * (img.shape[1] / img.shape[0]))
+    else:
+        width = target_width
+        height = int(target_width * (img.shape[0] / img.shape[1]))
+    shift_cols = (target_width - width) // 2
+    shift_rows = (target_height - height) // 2
+    output[shift_rows:(shift_rows + height), shift_cols:(shift_cols + width)] = \
+        cv2.resize(img, (width, height), interpolation=interpolation)
+    return output
