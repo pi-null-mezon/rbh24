@@ -42,4 +42,4 @@ COSINE: 0.014
 
 ## Does protection corrupts identification performance?
 
-![](../examples/protection/ROC.png)
+![](../train_naive_decoder/artifacts/ROC.png)
