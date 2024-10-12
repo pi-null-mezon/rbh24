@@ -71,10 +71,12 @@ pip install -r requirements.txt
 
 1. [./templatesgen](./templatesgen) - scripts to make photo + biometric templates pairs
 
-2. [./train_naive_decoder](./train_naive_decoder) - tools to train template to photo decoder (demo included)
+2. [./train_naive_decoder](./train_naive_decoder) - tools to train template to photo decoder
 
-3. [./train_adapter_for_instantid](./train_adapter_for_instantid) - tools to train adapter for instantid (demo included)
+3. [./train_adapter_for_instantid](./train_adapter_for_instantid) - tools to train adapter for instantid
 
-4. [./researches](./researches) - some researches we have done along the way
+4. [./train_decoder_with_fr_loss](./train_decoder_with_fr_loss) - tools to train advanced decoder
 
-5. [./protection](./protection) - biometric templates protection research
+5. [./researches](./researches) - some researches we have done along the way
+
+6. [./protection](./protection) - biometric templates protection research
