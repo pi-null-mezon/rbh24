@@ -5,7 +5,7 @@ Here we explore of how to train adapter for stable diffusion for face from biome
 [InstantID](https://github.com/instantX-research/InstantID) is control-net for stable diffusion image generator. It was 
 trained specifically to condition image generation by face similarity score for `insightface/antelopev2`.
 
-If you only interestedof how to run results, go to [demo section](#Demo) 
+If you are only interested in how to run reconstruction, go to [demo section](#Demo) 
 
 ## Experiment reasoning
 
