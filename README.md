@@ -1,6 +1,6 @@
 [EN](./README.md) | [RU](./README.ru.md)
 
-RECONSTRUCTION OF THE TEST EMBEDINGS:
+RECONSTRUCTION OF THE TEST EMBEDINGS `embedings_v3.pickle`:
  - download archive: https://disk.yandex.ru/d/cTriN6tMzgHxUw
 
 SCREENCASTS:
