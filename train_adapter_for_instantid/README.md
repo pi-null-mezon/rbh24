@@ -79,7 +79,12 @@ STATISTICS ON 1143 TEST SAMPLES FROM 'valface':
  - COSINE MAX:    0.8608
 TOTAL: 867 of 1143 have cosine with genuine template greater than 0.661 >> it is 75.9 % of validation samples
 
-
+STATISTICS ON 1000 TEST SAMPLES FROM 'glint':
+ - COSINE MIN:    -0.0005
+ - COSINE MEAN:   0.6938
+ - COSINE MEDIAN: 0.7340
+ - COSINE MAX:    0.8495
+TOTAL: 783 of 1000 have cosine with genuine template greater than 0.661 >> it is 78.3 % of validation samples
 ```
 
 ## How to run training
@@ -94,7 +99,7 @@ And press RUN button
 ## How to run validation
 
 1. Install [InstantID](https://github.com/instantX-research/InstantID) according to repo instructions
-2. Copy `validate.py` and `tools.py` into root of InstantID installation folder
+2. Copy `validate.py`, `tools.py`, `demo.py`, `protection.py` and `protection_demo.py` into root of InstantID installation folder
 3. Run validation:
 
 ```bash 
@@ -116,3 +121,15 @@ python demo.py --input local_path_to_templpates_or_photos_to_reconstruct --outpu
 ```
 
 Do not forget to copy `./artifacts` and `./models` to InstatID installation folder!
+
+To run protection demo (shows how to use photo to encrypt biometric template to protect it from reconstruction):
+
+```bash
+python protection_demo.py
+```
+
+![](../train_naive_decoder/artifacts/ROC.png)
+
+```
+
+```

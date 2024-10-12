@@ -1,0 +1,2 @@
+matplotlib
+cryptography==43.0.1

@@ -6,17 +6,22 @@ This is SystemFailure solution for Russian Biometric Hackaton 2024
 We have shown:
 
 1. Biometric template could be reconstructed to a face photo with high cosine similarity score with original template. 
-For two test sets, for our strongest reconstruction algorithm, we have measured positive pass rate to be 76.1 % and 43.4 % respectively.
+For two test sets, for our strongest reconstruction algorithm, we have measured positive match rate to be 76.1 % and 43.4 % respectively.
 
-| Test set | Description                                                             | Number of IDs | Samples per ID | Demographics                 | Positive pass rate FMR=1E-6 (Our decoder) | Positive pass rate FMR=1E-6 (Our adapter for InstantID) |
-|----------|-------------------------------------------------------------------------|---------------|----------------|------------------------------|-------------------------------------------|---------------------------------------------------------|
-| valface  | Manually collected samples of unique persons from internet. Not famous. | 1143          | 1              | White, Black and Asian faces | 34.2%                                     | 76.1%                                                   |
-| glint    | First 1K ids from glint dataset                                         | 1000          | 1              | White, Black and Asian faces | 25.3%                                     | 43.3%                                                   |
+| Test set | Description                                                               | Number of IDs | Samples per ID | Demographics                 | Positive match rate FMR=1E-6 (Our decoder) | Positive match rate FMR=1E-6 (Our adapter for InstantID) |
+|----------|---------------------------------------------------------------------------|---------------|----------------|------------------------------|--------------------------------------------|----------------------------------------------------------|
+| valface  | Manually collected photos of not famous persons from internet.            | 1143          | 1              | White, Black and Asian faces | 34.2 %                                     | 76.1 %                                                   |
+| glint    | First 1K ids from glint dataset. Diverse poses, blureness and occlusions. | 1000          | 1              | White, Black and Asian faces | 25.3 %                                     | 43.3 %                                                   |
 
 2. To make reconstruction algorithm relatively small data could be stollen from biometric system. Our strongest 
 reconstruction algorithm was trained on only 4K high quality photo-template pairs!
 
-3. protection - in progress...
+3. We have developed and evaluated a robust yet computationally efficient method for the protection of biometric
+templates against reconstruction attacks. This approach utilizes facial landmark coordinates to generate encryption
+keys. Our analysis demonstrates that the proposed protection method maintains the performance of biometric 
+identification systems, preserving both False Non-Identification Rate (FNIR) and False Positive Identification
+Rate (FPIR) at their original levels, while effectively reducing the positive match rate of reconstructed
+facial images to zero.
 
 ### Examples
 

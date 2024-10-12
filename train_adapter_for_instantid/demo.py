@@ -9,13 +9,13 @@ from argparse import ArgumentParser
 from insightface.app import FaceAnalysis
 
 argparser = ArgumentParser("Tool to convert buffalo_l templates (non normalized) into photo of the face")
-argparser.add_argument("--input", default="./examples",
+argparser.add_argument("--input", default="./input",
                        help="path to files to reconstruct (files could be .jpg, .png, .pkl or .b64)")
 argparser.add_argument("--adapter", default="./models/buffalo2antelope_adapter_100K.onnx",
                        help="weights of adapter")
 argparser.add_argument("--target_pose_photo", default="./examples/portrait1280p.jpg", help="photo to copy face pose")
-argparser.add_argument("--reconstruction_iterations", type=int, default=16, help="diffusion iterations to make")
-argparser.add_argument("--output", default=f"./examples/adapter", help="where to save generation results")
+argparser.add_argument("--reconstruction_iterations", type=int, default=20, help="diffusion iterations to do")
+argparser.add_argument("--output", default=f"./output", help="where to save generation results")
 args = argparser.parse_args()
 
 if not os.path.exists(args.input):
