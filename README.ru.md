@@ -1,5 +1,16 @@
 [EN](./README.md) | [RU](./README.ru.md)
 
+РЕКОНСТРУКЦИЯ ЭМБЕДИНГОВ:
+
+ - download archive: https://disk.yandex.ru/d/cTriN6tMzgHxUw
+
+СКРИНКАСТЫ:
+
+ - как запустить обучение декодера/адаптера: https://disk.yandex.ru/i/LpYopyLJYWYe4A
+ - как запустить валидацию: https://disk.yandex.ru/i/qgAYH3wQyz967w
+ - как запустить демо реконструкции: https://disk.yandex.ru/i/7Eu7Hu73S4tr1Q
+ - как запустить демо защиты: https://disk.yandex.ru/i/8Jl8nJUhlVOAvA
+
 RBH24
 ===
 
