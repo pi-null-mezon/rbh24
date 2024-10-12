@@ -167,7 +167,7 @@ original face photos (tebplate extraction by insightface/buffalo_l will be made)
 For each suitable file in input reconstructed face will be saved with the same filename plus cosine similarity with
 the original face template. Before run demo.py, download `buffalo_l_decoder_large_on_vgg11_v1.onnx` file to local disk.
 
-Link to download decoder: https://disk.yandex.ru/d/xy4Vj5m1_Zp3jQ
+Link to download decoder: https://disk.yandex.ru/d/C5_cTk9FsZJ4Zg
 
 ```bash
 python demo.py --input local_path_to_templpates_or_photos_to_reconstruct --output ./output --decoder ./weights/buffalo_l_decoder_large_on_vgg11_v1.onnx
