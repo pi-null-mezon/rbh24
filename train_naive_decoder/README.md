@@ -5,7 +5,7 @@ Here you can find training scripts and some validation results/artifacts for nai
 Basically here we have shown that several millions of template+photo pairs is enough to train decoder that will 
 produce synth faces that can surpass cosine similarity threshold for insightface/buffalo_l.
 
-If you only interestedof how to run results, go to [demo section](#Demo)
+If you are only interested in how to run reconstruction, go to [demo section](#Demo) 
 
 ### Installation
 
