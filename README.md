@@ -8,10 +8,12 @@ We have shown:
 1. Biometric template could be reconstructed to a face photo with high cosine similarity score with the original template. 
 For two test sets, for our strongest reconstruction algorithm, we have measured positive match rate to be 76.1 % and 43.4 % respectively.
 
-| Test set | Description                                                               | Number of IDs | Samples per ID | Demographics                 | Positive match rate FMR=1E-6 (Our decoder) | Positive match rate FMR=1E-6 (Our adapter for InstantID) |
+| Test set | Description                                                               | Number of IDs | Samples per ID | Demographics                 | Positive match rate* FMR=1E-6 (Our decoder) | Positive match rate* FMR=1E-6 (Our adapter for InstantID) |
 |----------|---------------------------------------------------------------------------|---------------|----------------|------------------------------|--------------------------------------------|----------------------------------------------------------|
 | valface  | Manually collected photos of not famous persons from internet.            | 1143          | 1              | White, Black and Asian faces | 34.2 %                                     | 76.1 %                                                   |
 | glint    | First 1K ids from glint dataset. Diverse poses, blureness and occlusions. | 1000          | 1              | White, Black and Asian faces | 25.3 %                                     | 43.3 %                                                   |
+
+*Positive math rates reported for insightface/buffalo_l model
 
 2. To make reconstruction algorithm relatively small data could be stollen from biometric system. Our strongest 
 reconstruction algorithm was trained on only 4K high quality photo-template pairs!
