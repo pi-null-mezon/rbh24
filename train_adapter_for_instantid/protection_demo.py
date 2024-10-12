@@ -24,7 +24,7 @@ cfg.faces_dataset = f"/home/{os.getlogin()}/Fastdata/HACK/geofaces_plus_opentest
 cfg.max_ids = -1  # -1 means collect all
 cfg.top_k = 10
 cfg.adapter = './models/buffalo2antelope_adapter_HQ_4K.onnx'
-cfg.target_pose_photo = './examples/portrait1280p.jpg'
+cfg.target_pose_photo = './examples/alex.jpg'
 cfg.reconstruction_iterations = 16
 
 buffalo_fa = FaceAnalysis(name='buffalo_l', root='./', providers=['CUDAExecutionProvider', 'CPUExecutionProvider'])

@@ -9,6 +9,7 @@ from PIL import Image
 from diffusers.utils import load_image
 from diffusers.models import ControlNetModel
 from pipeline_stable_diffusion_xl_instantid import StableDiffusionXLInstantIDPipeline, draw_kps
+import logging
 
 
 class CustomDataSet(Dataset):
@@ -222,3 +223,18 @@ def fit_img_into_rectangle(img, target_width, target_height, interpolation=cv2.I
     output[shift_rows:(shift_rows + height), shift_cols:(shift_cols + width)] = \
         cv2.resize(img, (width, height), interpolation=interpolation)
     return output
+
+
+def setup_logger(log_file_name, file_context_name):
+    logger = logging.getLogger(file_context_name)
+    logger.setLevel(logging.DEBUG)
+    console_handler = logging.StreamHandler()  # For stdout
+    file_handler = logging.FileHandler(log_file_name, mode='w')  # For file
+    console_handler.setLevel(logging.DEBUG)
+    file_handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    console_handler.setFormatter(formatter)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(console_handler)
+    logger.addHandler(file_handler)
+    return logger

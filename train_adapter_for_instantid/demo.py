@@ -1,7 +1,7 @@
 import os
 import base64
 from easydict import EasyDict as edict
-from tools import initialize_onnx_session, extract_template_from_image, load_image, \
+from tools import initialize_onnx_session, extract_template_from_image, load_image, setup_logger, \
     initialize_instantid_session, reconstruct_face_from_template, prepare_target_pose_kps
 import numpy as np
 import pickle
@@ -11,10 +11,11 @@ from insightface.app import FaceAnalysis
 argparser = ArgumentParser("Tool to convert buffalo_l templates (non normalized) into photo of the face")
 argparser.add_argument("--input", default="./input",
                        help="path to files to reconstruct (files could be .jpg, .png, .pkl or .b64)")
-argparser.add_argument("--adapter", default="./models/buffalo2antelope_adapter_100K.onnx",
+argparser.add_argument("--adapter", default="./models/buffalo2atelope_adapter_analytical.onnx",
                        help="weights of adapter")
-argparser.add_argument("--target_pose_photo", default="./examples/portrait1280p.jpg", help="photo to copy face pose")
-argparser.add_argument("--reconstruction_iterations", type=int, default=20, help="diffusion iterations to do")
+argparser.add_argument("--target_pose_photo", default="./examples/portrait.jpg", help="photo to copy face pose")
+argparser.add_argument("--reconstruction_iterations", type=int, default=15, help="diffusion iterations to do")
+argparser.add_argument("--add_cos_in_filename", action="store_true", help="add cosine value to output filename")
 argparser.add_argument("--output", default=f"./output", help="where to save generation results")
 args = argparser.parse_args()
 
@@ -33,6 +34,8 @@ cfg.max_allowed_attempts_to_generate_face = 4  # sometime diffusion could not ge
 cfg.target_reconstruction_size = (512, 512)
 cfg.reconstruction_iterations = args.reconstruction_iterations
 
+logger = setup_logger(os.path.join(args.output, 'reconstruction.log'), None)
+
 buffalo = FaceAnalysis(name='buffalo_l', root='./', providers=['CUDAExecutionProvider', 'CPUExecutionProvider'])
 buffalo.prepare(ctx_id=0, det_size=(640, 640))
 
@@ -45,37 +48,50 @@ instantid = initialize_instantid_session()  # leave default arguments
 
 target_pose_kps = prepare_target_pose_kps(args.target_pose_photo, antelope)
 
+read_templates_from_pickle = False
+if '.pickle' in args.input:
+    with open(args.input, 'rb') as i_f:
+        pickle_templates = pickle.load(i_f)
+        read_templates_from_pickle = True
+if read_templates_from_pickle:
+    filenames_list = pickle_templates.keys()
+else:
+    filenames_list = [f.name for f in os.scandir(args.input) if f.is_file()]
+
 cosines = []
-for filename in [f.name for f in os.scandir(args.input) if f.is_file()]:
+for filename in filenames_list:
     ot = None
-    abs_filename = os.path.join(args.input, filename)
-    if '.jpg' in abs_filename or '.jpeg' in abs_filename or '.png' in abs_filename:
-        info = extract_template_from_image(load_image(abs_filename), fa_model=buffalo)
-        if info is None:
-            print(f"Can not detect face on '{abs_filename}'! File will be skipped...")
+    if not read_templates_from_pickle:
+        abs_filename = os.path.join(args.input, filename)
+        if '.jpg' in abs_filename or '.jpeg' in abs_filename or '.png' in abs_filename:
+            info = extract_template_from_image(load_image(abs_filename), fa_model=buffalo)
+            if info is None:
+                logger.info(f"Can not detect face on '{abs_filename}'! File will be skipped...")
+                continue
+            ot = info['embedding']
+        elif '.pkl' in abs_filename:
+            with open(abs_filename, 'rb') as i_f:
+                ot = pickle.load(i_f)
+        elif '.b64' in abs_filename:
+            with open(abs_filename, 'r') as i_f:
+                bin_data = base64.b64decode(i_f.read().encode())
+                ot = np.frombuffer(bin_data, dtype=np.float)
+        else:
             continue
-        ot = info['embedding']
-    elif '.pkl' in abs_filename:
-        with open(abs_filename, 'rb') as i_f:
-            ot = pickle.load(i_f)
-    elif '.b64' in abs_filename:
-        with open(abs_filename, 'r') as i_f:
-            bin_data = base64.b64decode(i_f.read().encode())
-            ot = np.frombuffer(bin_data, dtype=np.float)
     else:
-        continue
+        ot = pickle_templates[filename]['embedding']
     # format validation
     if ot is None:
-        print(f"File: '{abs_filename}' >> template was not extracted or can not be read from disk! Abort...")
+        logger.info(f"File: '{abs_filename}' >> template was not extracted or can not be read from disk! Abort...")
         exit()
     if not isinstance(ot, np.ndarray):
-        print(f"File: '{abs_filename}' >> template is not numpy array! Abort...")
+        logger.info(f"File: '{abs_filename}' >> template is not numpy array! Abort...")
         exit()
     if ot.shape != (512,) and ot.shape != (1, 512):
-        print(f"File: '{abs_filename}' >> template have wrong shape {ot.shape}! Abort...")
+        logger.info(f"File: '{abs_filename}' >> template have wrong shape {ot.shape}! Abort...")
         exit()
     if 0.999 <= np.linalg.norm(ot) < 1.001:
-        print(f"File: '{abs_filename}' >> template should not be normalized ! Abort...")
+        logger.info(f"File: '{abs_filename}' >> template should not be normalized ! Abort...")
         exit()
 
     fail_iterations = 0
@@ -94,24 +110,30 @@ for filename in [f.name for f in os.scandir(args.input) if f.is_file()]:
         fail_iterations += 1
         if fail_iterations > cfg.max_allowed_attempts_to_generate_face:
             break
-    if not face_not_detected:
+
+    if face_not_detected:
+        cosines.append(0)
+        logger.info(f"For {abs_filename} we could not reconstruct face within max allowed attempts :(")
+    else:
         ont = ot / np.linalg.norm(ot)
         cosine = np.dot(rnt, ont)
         cosines.append(cosine)
-        print(f"For {abs_filename} we have got COSINE: {cosine:.4f}")
-        abs_target_filename = os.path.join(args.output, filename.rsplit('.', 1)[0] + f"_(cosine {cosine:.4f}).jpg")
+        logger.info(f"For {filename} we have got COSINE: {cosine:.4f}")
+        if args.add_cos_in_filename:
+            abs_target_filename = os.path.join(args.output, filename.rsplit('.', 1)[0] + f"_(cosine {cosine:.4f}).jpg")
+        else:
+            abs_target_filename = os.path.join(args.output, filename)
         pilimg.save(abs_target_filename)
-    else:
-        cosines.append(0)
-        print(f"For {abs_filename} we could not reconstruct face within max allowed attempts :(")
+
 
 if len(cosines) > 0:
-    print(f"STATISTICS ON {len(cosines)} TEST SAMPLES FROM '{args.input}':")
+    logger.info(f"STATISTICS ON {len(cosines)} TEST SAMPLES FROM '{args.input}':")
     cosines = np.array(cosines)
-    print(f" - COSINE MIN:    {cosines.min().item():.4f}")
-    print(f" - COSINE MEAN:   {cosines.mean().item():.4f}")
-    print(f" - COSINE MEDIAN: {np.median(cosines).item():.4f}")
-    print(f" - COSINE MAX:    {cosines.max().item():.4f}")
+    logger.info(f" - COSINE MIN:    {cosines.min().item():.4f}")
+    logger.info(f" - COSINE MEAN:   {cosines.mean().item():.4f}")
+    logger.info(f" - COSINE MEDIAN: {np.median(cosines).item():.4f}")
+    logger.info(f" - COSINE MAX:    {cosines.max().item():.4f}")
     tp = np.sum(cosines > cfg.buffalo_cosine_threshold)
-    print(f"TOTAL: {tp} of {len(cosines)} have cosine with genuine template greater than {cfg.buffalo_cosine_threshold:.3f}"
-          f" >> it is {100*tp/len(cosines):.1f} % of enrolled samples")
+    logger.info(f"TOTAL: {tp} of {len(cosines)} have cosine with genuine template greater than {cfg.buffalo_cosine_threshold:.3f}"
+                f" >> it is {100*tp/len(cosines):.1f} % of enrolled samples")
+    logger.info(f"\n-------------------------------------------------\nSUM OF ALL COSINES: {cosines.sum().item():.4f}")

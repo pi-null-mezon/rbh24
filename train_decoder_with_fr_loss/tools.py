@@ -8,7 +8,6 @@ import torch
 import cv2
 import os
 import sys
-from torchvision import transforms
 
 
 def normalize_image(bgr, mean, std, swap_red_blue=False):
@@ -189,7 +188,9 @@ def extract_template_from_image(image, fa_model):
 
 
 def extract_template_from_synth_image(img, buffalo_onnx_session, normalize):
-    resized_img = cv2.resize(img, (112, 112), interpolation=cv2.INTER_LINEAR)
+    target_size = (112, 112)
+    if img.shape != target_size:
+        resized_img = cv2.resize(img, target_size, interpolation=cv2.INTER_LINEAR)
     tensor = image2tensor(resized_img, mean=3 * [127.5 / 255], std=3 * [127.5 / 255], swap_red_blue=True)
     tensor = np.expand_dims(tensor, axis=0)
     template = make_onnx_inference(buffalo_onnx_session, tensor)
@@ -211,3 +212,21 @@ def fit_img_into_rectangle(img, target_width, target_height, interpolation=cv2.I
     output[shift_rows:(shift_rows + height), shift_cols:(shift_cols + width)] = \
         cv2.resize(img, (width, height), interpolation=interpolation)
     return output
+
+
+import logging
+
+
+def setup_logger(log_file_name, file_context_name):
+    logger = logging.getLogger(file_context_name)
+    logger.setLevel(logging.DEBUG)
+    console_handler = logging.StreamHandler()  # For stdout
+    file_handler = logging.FileHandler(log_file_name, mode='w')  # For file
+    console_handler.setLevel(logging.DEBUG)
+    file_handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    console_handler.setFormatter(formatter)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(console_handler)
+    logger.addHandler(file_handler)
+    return logger
