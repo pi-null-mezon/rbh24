@@ -5,7 +5,7 @@ This is SystemFailure solution for Russian Biometric Hackaton 2024
 
 We have shown:
 
-1. Biometric template could be reconstructed to a face photo with high cosine similarity score with original template. 
+1. Biometric template could be reconstructed to a face photo with high cosine similarity score with the original template. 
 For two test sets, for our strongest reconstruction algorithm, we have measured positive match rate to be 76.1 % and 43.4 % respectively.
 
 | Test set | Description                                                               | Number of IDs | Samples per ID | Demographics                 | Positive match rate FMR=1E-6 (Our decoder) | Positive match rate FMR=1E-6 (Our adapter for InstantID) |
