@@ -10,7 +10,7 @@ Here we discuss how to protect biometric templates against reconstruction by mea
 
 We encrypt biometric templates by keys that are computed from facial landmarks coordinates. On client side we use landmarks
 from identification photo. On server side we use landmarks averaged acros all registration photos. Our method could work
-with 68 facial keypoints and 5 facial key points. Implementation id encription and decription functions could be find in
+with 68 facial keypoints and 5 facial key points. Implementation of `encription` and `decription` functions could be find in
 [sources](../train_adapter_for_instantid/protection.py).
 
 Protection demos have been moved:
