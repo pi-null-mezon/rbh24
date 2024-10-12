@@ -1,5 +1,14 @@
 [EN](./README.md) | [RU](./README.ru.md)
 
+RECONSTRUCTION OF THE TEST EMBEDINGS:
+ - download archive: https://disk.yandex.ru/d/cTriN6tMzgHxUw
+
+SCREENCASTS:
+ - how to run training of the decoder/adapter: https://disk.yandex.ru/i/LpYopyLJYWYe4A
+ - how to run validation: https://disk.yandex.ru/i/qgAYH3wQyz967w
+ - how to run reconstruction demo: https://disk.yandex.ru/i/7Eu7Hu73S4tr1Q
+ - how to run protection demo: https://disk.yandex.ru/i/8Jl8nJUhlVOAvA
+
 RBH24
 ===
 
