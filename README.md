@@ -8,6 +8,8 @@ We have shown:
 1. Biometric template could be reconstructed to a face photo with high cosine similarity score with the original template. 
 For two test sets, for our strongest reconstruction algorithm, we have measured positive match rate to be 76.1 % and 43.4 % respectively.
 
+Table 1 - reconstruction performance
+
 | Test set    | IDs  | Samples/ID | Demographics        | PMR@1E-6 (Our decoder) | PMR@1E-6 (Our adapter for InstantID) | PMR@1E-6 (Our decoderV2) |
 |-------------|------|------------|---------------------|------------------------|--------------------------------------|--------------------------|
 | **valface** | 1143 | 1          | White, Black, Asian | 34.2 %                 | 75.9 %                               | 100 %                    |
@@ -30,6 +32,8 @@ keys. Our analysis demonstrates that the proposed protection method maintains th
 identification systems, preserving both False Non-Identification Rate (FNIR) and False Positive Identification
 Rate (FPIR) at their original levels, while effectively reducing the positive match rate of reconstructed
 facial images to zero.
+
+Table 2 - protection performance
 
 | Metric                               | Our adapter for InstantID | Our decoder       | Our decoderV2     |
 |--------------------------------------|---------------------------|-------------------|-------------------|
