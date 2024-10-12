@@ -131,5 +131,10 @@ python protection_demo.py
 ![](../train_naive_decoder/artifacts/ROC.png)
 
 ```
-
+STATISTICS ON 1777 UNIQUE PERSONS IDENTIFICATIONS:
+ - COSINE MIN:    -0.1827
+ - COSINE MEAN:   0.0190
+ - COSINE MEDIAN: 0.0166
+ - COSINE MAX:    0.1953
+TOTAL: 0 of 1777 have cosine with genuine template greater than 0.661 >> it is 0.0 % of samples
 ```

@@ -42,4 +42,6 @@ COSINE: 0.014
 
 ## Does protection corrupts identification performance?
 
+No! Face identification performance is preserved.
+
 ![](../train_naive_decoder/artifacts/ROC.png)

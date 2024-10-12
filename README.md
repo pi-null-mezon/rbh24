@@ -8,12 +8,12 @@ We have shown:
 1. Biometric template could be reconstructed to a face photo with high cosine similarity score with the original template. 
 For two test sets, for our strongest reconstruction algorithm, we have measured positive match rate to be 76.1 % and 43.4 % respectively.
 
-| Test set | Description                                                               | Number of IDs | Samples per ID | Demographics                 | Positive match rate* FMR=1E-6 (Our decoder) | Positive match rate* FMR=1E-6 (Our adapter for InstantID) |
-|----------|---------------------------------------------------------------------------|---------------|----------------|------------------------------|--------------------------------------------|----------------------------------------------------------|
-| valface  | Manually collected photos of not famous persons from internet.            | 1143          | 1              | White, Black and Asian faces | 34.2 %                                     | 76.1 %                                                   |
-| glint    | First 1K ids from glint dataset. Diverse poses, blureness and occlusions. | 1000          | 1              | White, Black and Asian faces | 25.3 %                                     | 43.3 %                                                   |
+| Test set    | Description                                    | IDs  | Samples/ID | Demographics        | PMR@1E-6 (Our decoder) | PMR@1E-6 (Our adapter for InstantID) |
+|-------------|------------------------------------------------|------|------------|---------------------|----------------------------|------------------------------------------|
+| **valface** | Manually collected photos, non-famous persons  | 1143 | 1          | White, Black, Asian | 34.2 %                     | 76.1 %                                   |
+| **glint**   | First 1K ids from glint dataset, diverse poses | 1000 | 1          | White, Black, Asian | 25.3 %                     | 43.3 %                                   |
 
-*Positive math rates reported for insightface/buffalo_l model
+*PMR@FMR=1E-6 is positive match rate reported for [insightface/buffalo_l model at False Match Rate 1E-6](./researches/README.md)
 
 2. To make reconstruction algorithm relatively small data could be stollen from biometric system. Our strongest 
 reconstruction algorithm was trained on only 4K high quality photo-template pairs!
@@ -24,6 +24,15 @@ keys. Our analysis demonstrates that the proposed protection method maintains th
 identification systems, preserving both False Non-Identification Rate (FNIR) and False Positive Identification
 Rate (FPIR) at their original levels, while effectively reducing the positive match rate of reconstructed
 facial images to zero.
+
+| Metric                               | Our adapter for InstantID | Our decoder      |
+|--------------------------------------|---------------------------|------------------|
+| **Number of Unique Identifications** | 1777                      | 1777             |
+| **Cosine Min**                       | -0.1827                   | -0.1728          |
+| **Cosine Mean**                      | 0.0190                    | 0.0120           |
+| **Cosine Median**                    | 0.0166                    | 0.0111           |
+| **Cosine Max**                       | 0.1953                    | 0.1761           |
+| **PMR@FMR=1E-6**                     | 0 of 1777 (0.0%)          | 0 of 1777 (0.0%) |
 
 ### Examples
 
