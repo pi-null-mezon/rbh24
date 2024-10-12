@@ -1,0 +1,5 @@
+torchvision==1.15.1
+easydict==1.13
+albumentations==1.14.1
+tensorboard==2.18.0
+opencv-python==4.7.0.72
