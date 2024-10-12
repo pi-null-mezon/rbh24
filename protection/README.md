@@ -6,7 +6,7 @@ Here we discuss how to protect biometric templates against reconstruction by mea
 
 ![](./figures/rbh24.png)
 
-## How we will protect templates
+## How we protect templates
 
 We encrypt biometric templates by keys that are computed from facial landmarks coordinates. On client side we use landmarks
 from identification photo. On server side we use landmarks averaged acros all registration photos. Our method could work
@@ -39,3 +39,7 @@ COSINE: 0.005
 
 COSINE: 0.014
 ![](../examples/protection/encrypted_template_reconstruction_by_adapter_HQ_4K_sample_5.jpg)
+
+## Does protection corrupts identification performance?
+
+![](../examples/protection/ROC.png)
