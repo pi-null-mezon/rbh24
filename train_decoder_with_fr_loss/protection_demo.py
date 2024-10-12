@@ -23,7 +23,7 @@ cfg.visualize_ms = 30  # 0 - wait key press
 cfg.faces_dataset = f"/home/{os.getlogin()}/Fastdata/HACK/geofaces_plus_opentest"
 cfg.max_ids = -1  # -1 means collect all
 cfg.top_k = 10
-cfg.decoder = './weights/buffalo_l_decoder_large_on_vgg11_v1.onnx'
+cfg.decoder = './weights/buffalo_decoder_on_fr_wo_discr_wo_pixel_loss_last.onnx'
 
 buffalo_fa = FaceAnalysis(name='buffalo_l', root='../', providers=['CUDAExecutionProvider', 'CPUExecutionProvider'])
 buffalo_fa.prepare(ctx_id=0, det_size=(640, 640))

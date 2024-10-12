@@ -12,9 +12,9 @@ from insightface.app import FaceAnalysis
 argparser = ArgumentParser("validation script")
 argparser.add_argument("--set", choices={'glint', 'valface'}, help="name of set to validate on")
 argparser.add_argument("--max_ids", type=int, default=-1, help="max ids to process (-1 - take all)")
-argparser.add_argument("--adapter", default="./models/buffalo2atelope_adapter_analytical.onnx",
+argparser.add_argument("--adapter", default="./models/buffalo2antelope_adapter_HQ_4K.onnx",
                        help="weights of adapter")
-argparser.add_argument("--target_pose_photo", default="./examples/portrait1280p.jpg", help="photo to copy face pose")
+argparser.add_argument("--target_pose_photo", default="./examples/portrait.jpg", help="photo to copy face pose")
 args = argparser.parse_args()
 
 adapter_name = args.adapter.rsplit('.onnx', 1)[0].rsplit('/', 1)[1]

@@ -2,9 +2,10 @@
 
 Here you can find training scripts and some validation results/artifacts for improved decoder training.
 
-Basically here we have shown that several millions of template+photo pairs is enough to train decoder that will 
-produce synth faces that can surpass cosine similarity threshold for insightface/buffalo_l.     
+If you only interestedof how to run results, go to [demo section](#Demo)
+    
 ### Key idea:
+
 EDA in train_adapter for InstanceID revealed highly similar mutual allocation of vectors for different persons in latent space ==> allnFR modelsextract similar patterns and another FR model is expected to work better in perceptual loss:
 
 * we used CosFace resnet50 model trained on glint from []!(https://github.com/deepinsight/insightface/tree/master/recognition/arcface_torch) for perceptual loss
@@ -87,16 +88,50 @@ Test set similarity check after 2 epoches:
 
 ```
 STATISTICS ON 1143 TEST SAMPLES FROM 'valface':
- 
+ - COSINE MIN:    0.7777
+ - COSINE MEAN:   0.8826
+ - COSINE MEDIAN: 0.8861
+ - COSINE MAX:    0.9312
+TOTAL: 1143 of 1143 have cosine with genuine template greater than 0.661 >> it is 100.0 % of validation samples
 
 STATISTICS ON 1000 TEST SAMPLES FROM 'glint':
- - COSINE MIN:    0.7733
+ - COSINE MIN:    0.6738
  - COSINE MEAN:   0.8773
- - COSINE MEDIAN: 0.8804
- - COSINE MAX:    0.9286
+ - COSINE MEDIAN: 0.8813
+ - COSINE MAX:    0.9262
+TOTAL: 1000 of 1000 have cosine with genuine template greater than 0.661 >> it is 100.0 % of validation samples
 ```
 
 
 TO-DO...
 
 Check number of single vectors per person which will be enough for training
+
+
+## Demo:
+
+Demo is a simple script that reconstructs face photos for all files in specific input directory. This files could be 
+original face photos (tebplate extraction by insightface/buffalo_l will be made) or templates in *.pkl or *.b64 formats.
+For each suitable file in input reconstructed face will be saved with the same filename plus cosine similarity with
+the original face template. Before run demo.py, download `buffalo_decoder_on_fr_wo_discr_wo_pixel_loss_last.onnx` file to local disk.
+
+Link to download decoder: https://disk.yandex.ru/d/6TR43zHhqMvjRg
+
+```bash
+python demo.py --input local_path_to_templpates_or_photos_to_reconstruct --output ./output --decoder ./weights/buffalo_decoder_on_fr_wo_discr_wo_pixel_loss_last.onnx.onnx
+```
+
+To run protection demo (shows how to use photo to encrypt biometric template to protect it from reconstruction):
+
+```bash
+python protection_demo.py
+```
+
+```
+STATISTICS ON 1777 UNIQUE PERSONS IDENTIFICATIONS:
+ - COSINE MIN:    -0.1735
+ - COSINE MEAN:   0.0091
+ - COSINE MEDIAN: 0.0101
+ - COSINE MAX:    0.1539
+TOTAL: 0 of 1777 have cosine with genuine template greater than 0.661 >> it is 0.0 % of samples
+```

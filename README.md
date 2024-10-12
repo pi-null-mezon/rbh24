@@ -8,12 +8,18 @@ We have shown:
 1. Biometric template could be reconstructed to a face photo with high cosine similarity score with the original template. 
 For two test sets, for our strongest reconstruction algorithm, we have measured positive match rate to be 76.1 % and 43.4 % respectively.
 
-| Test set    | Description                                    | IDs  | Samples/ID | Demographics        | PMR@1E-6 (Our decoder) | PMR@1E-6 (Our adapter for InstantID) |
-|-------------|------------------------------------------------|------|------------|---------------------|----------------------------|------------------------------------------|
-| **valface** | Manually collected photos, non-famous persons  | 1143 | 1          | White, Black, Asian | 34.2 %                     | 76.1 %                                   |
-| **glint**   | First 1K ids from glint dataset, diverse poses | 1000 | 1          | White, Black, Asian | 25.3 %                     | 43.3 %                                   |
+| Test set    | IDs  | Samples/ID | Demographics        | PMR@1E-6 (Our decoder) | PMR@1E-6 (Our adapter for InstantID) | PMR@1E-6 (Our decoderV2) |
+|-------------|------|------------|---------------------|------------------------|--------------------------------------|--------------------------|
+| **valface** | 1143 | 1          | White, Black, Asian | 34.2 %                 | 75.9 %                               | 100 %                    |
+| **glint**   | 1000 | 1          | White, Black, Asian | 25.3 %                 | 78.3 %                               | 100 %                    |
 
-*PMR@FMR=1E-6 is positive match rate reported for [insightface/buffalo_l model at False Match Rate 1E-6](./researches/README.md)
+Where:
+
+ - PMR@FMR=1E-6 is positive match rate for `insightface/buffalo_l` at [False Match Rate 1E-6](./researches/README.md)
+
+ - **valface** - Manually collected photos. Mostly non-famous persons
+
+ - **glint** - Subset of first 1K ids from glint dataset. Divergent poses, blurred faces, emotions, occlusions
 
 2. To make reconstruction algorithm relatively small data could be stollen from biometric system. Our strongest 
 reconstruction algorithm was trained on only 4K high quality photo-template pairs!
@@ -25,27 +31,27 @@ identification systems, preserving both False Non-Identification Rate (FNIR) and
 Rate (FPIR) at their original levels, while effectively reducing the positive match rate of reconstructed
 facial images to zero.
 
-| Metric                               | Our adapter for InstantID | Our decoder      |
-|--------------------------------------|---------------------------|------------------|
-| **Number of Unique Identifications** | 1777                      | 1777             |
-| **Cosine Min**                       | -0.1827                   | -0.1728          |
-| **Cosine Mean**                      | 0.0190                    | 0.0120           |
-| **Cosine Median**                    | 0.0166                    | 0.0111           |
-| **Cosine Max**                       | 0.1953                    | 0.1761           |
-| **PMR@FMR=1E-6**                     | 0 of 1777 (0.0%)          | 0 of 1777 (0.0%) |
+| Metric                               | Our adapter for InstantID | Our decoder       | Our decoderV2     |
+|--------------------------------------|---------------------------|-------------------|-------------------|
+| **Number of Unique Identifications** | 1777                      | 1777              | 1777              |
+| **Cosine Min**                       | -0.1827                   | -0.1728           | -0.1735           |
+| **Cosine Mean**                      | 0.0190                    | 0.0120            | 0.0091            |
+| **Cosine Median**                    | 0.0166                    | 0.0111            | 0.0101            |
+| **Cosine Max**                       | 0.1953                    | 0.1761            | 0.1539            |
+| **PMR@FMR=1E-6**                     | 0 of 1777 (0.0 %)         | 0 of 1777 (0.0 %) | 0 of 1777 (0.0 %) |
 
 ### Examples
 
-| Original photo               | Our adapter for InstantID                                     | Our decoder                                      |
-|------------------------------|---------------------------------------------------------------|--------------------------------------------------|
-| ![](./examples/crops/ik.jpg) | ![](./examples/adapters/adapterHQ4K/ik_(cosine%200.7578).jpg) | ![](./examples/decoder/ik_(cosine%200.5390).png) |
-|                              | Cosine: 0.7578                                                | Cosine: 0.5390                                   |
-| ![](./examples/crops/ka.jpg) | ![](./examples/adapters/adapterHQ4K/ka_(cosine%200.8520).jpg) | ![](./examples/decoder/ka_(cosine%200.5383).png) |
-|                              | Cosine: 0.8520                                                | Cosine: 0.5383                                   |
-| ![](./examples/crops/kd.jpg) | ![](./examples/adapters/adapterHQ4K/kd_(cosine%200.7562).jpg) | ![](./examples/decoder/kd_(cosine%200.6774).png) |
-|                              | Cosine: 0.7562                                                | Cosine: 0.6774                                   |
-| ![](./examples/crops/at.jpg) | ![](./examples/adapters/adapterHQ4K/at_(cosine%200.7029).jpg) | ![](./examples/decoder/at_(cosine%200.6036).png) |
-|                              | Cosine: 0.7029                                                | Cosine: 0.6036                                   |
+| Original photo               | Our adapter for InstantID                                     | Our decoder                                      | Our decoderV2                                      |
+|------------------------------|---------------------------------------------------------------|--------------------------------------------------|----------------------------------------------------|
+| ![](./examples/crops/ik.jpg) | ![](./examples/adapters/adapterHQ4K/ik_(cosine%200.7578).jpg) | ![](./examples/decoder/ik_(cosine%200.5390).png) | ![](./examples/decoderV2/ik_(cosine%200.8508).png) |
+|                              | Cosine: 0.7578                                                | Cosine: 0.5390                                   | Cosine: 0.8508                                     |
+| ![](./examples/crops/ka.jpg) | ![](./examples/adapters/adapterHQ4K/ka_(cosine%200.8520).jpg) | ![](./examples/decoder/ka_(cosine%200.5383).png) | ![](./examples/decoderV2/ka_(cosine%200.8845).png) |
+|                              | Cosine: 0.8520                                                | Cosine: 0.5383                                   | Cosine: 0.8845                                     |
+| ![](./examples/crops/kd.jpg) | ![](./examples/adapters/adapterHQ4K/kd_(cosine%200.7562).jpg) | ![](./examples/decoder/kd_(cosine%200.6774).png) | ![](./examples/decoderV2/kd_(cosine%200.8930).png) |
+|                              | Cosine: 0.7562                                                | Cosine: 0.6774                                   | Cosine: 0.8930                                     |
+| ![](./examples/crops/at.jpg) | ![](./examples/adapters/adapterHQ4K/at_(cosine%200.7029).jpg) | ![](./examples/decoder/at_(cosine%200.6036).png) | ![](./examples/decoderV2/at_(cosine%200.9049).png) | 
+|                              | Cosine: 0.7029                                                | Cosine: 0.6036                                   | Cosine: 0.9049                                     |
 
 ### Installation
 

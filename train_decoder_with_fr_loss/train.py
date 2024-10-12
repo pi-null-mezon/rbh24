@@ -20,15 +20,15 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # --------- TRAIN CONFIG -----------
 
 cfg = edict()
-cfg.mean=[0.5, 0.5, 0.5]
-cfg.std=[0.5, 0.5, 0.5]
-cfg.swap_red_blue = True           # torchvision default
-cfg.crop_size = (112, 112)#(128, 128)         # treat as (width, height)
+cfg.mean = [0.5, 0.5, 0.5]
+cfg.std = [0.5, 0.5, 0.5]
+cfg.swap_red_blue = True  # torchvision default
+cfg.crop_size = (112, 112)  # (128, 128)         # treat as (width, height)
 cfg.batch_size = 200
 cfg.num_epochs = 10
 cfg.lr_scheduler = "Cosine"  # "StepPlateau"
-cfg.perception_net_name = 'fr'# 'vgg11'
-cfg.latent_space_dims = 512        # as features size for insightface/buffalo_l is
+cfg.perception_net_name = 'fr'  # 'vgg11'
+cfg.latent_space_dims = 512  # as features size for insightface/buffalo_l is
 cfg.max_lr = 0.001
 cfg.min_lr = 0.00001
 cfg.max_grad_norm = 10.0
@@ -36,7 +36,7 @@ cfg.augment = False
 cfg.normalize_templates = True
 cfg.max_batches_per_train_epoch = -1  # -1 - use all available batches
 cfg.visualize_control_samples = 9  # how many tst samples will be used for online visual control
-cfg.visualize_each_step = 32 * 32#1024
+cfg.visualize_each_step = 32 * 32  # 1024
 cfg.perceptual_loss_weight = 11.0
 cfg.laplace_loss_weight = 1.0
 cfg.mse_loss_weight = 1.0
@@ -189,21 +189,22 @@ def train(epoch, dataloader):
             break
         templates = templates.to(device)
         photos = photos.to(device)
-        outputs = model(templates)#[:, :, :cfg.crop_size[0], : cfg.crop_size[1]]
+        outputs = model(templates)  # [:, :, :cfg.crop_size[0], : cfg.crop_size[1]]
         opf = perceptor(photos)
         rpf = perceptor(outputs)
-        
+
         loss = loss_fn(outputs, photos, opf, rpf)
         # Discriminator optimization
         if cfg.use_discriminator:
             optimizer_d.zero_grad()
             discr_pred = discriminator(torch.cat([photos, outputs.detach()]))
-            discr_target = torch.tensor([1. for i in range(len(photos))] + [0. for i in range(len(outputs))]).unsqueeze(1).cuda()
+            discr_target = torch.tensor([1. for i in range(len(photos))] + [0. for i in range(len(outputs))]).unsqueeze(
+                1).cuda()
             discr_loss = loss_fn_bce(discr_pred, discr_target)
             discr_loss.backward()
             optimizer_d.step()
 
-        # Generator optimization
+            # Generator optimization
             discr_pred = discriminator(outputs)
             discr_target = torch.tensor([0. for i in range(len(outputs))]).unsqueeze(1).cuda()
             discr_loss = loss_fn_bce(discr_pred, discr_target)
@@ -217,10 +218,11 @@ def train(epoch, dataloader):
             loss_avgm.update(loss.item())
             samples_enrolled += templates.size(0)
             speedometer.update(templates.size(0))
-            if (batch_idx % cfg.visualize_each_step == 0) or ((((batch_idx +1) * cfg.batch_size // 10) in cfg.save_powers) and epoch == 0):
+            if (batch_idx % cfg.visualize_each_step == 0) or (
+                    (((batch_idx + 1) * cfg.batch_size // 10) in cfg.save_powers) and epoch == 0):
                 model.eval()
                 for i, sample in enumerate(visual_control_samples):
-                    probe = model(sample[0])#[:, :, :cfg.crop_size[0], : cfg.crop_size[1]]
+                    probe = model(sample[0])  # [:, :, :cfg.crop_size[0], : cfg.crop_size[1]]
                     orig = tensor2image(sample[1].cpu().numpy(),
                                         mean=cfg.mean,
                                         std=cfg.std,
@@ -232,11 +234,11 @@ def train(epoch, dataloader):
                     canvas = np.zeros(shape=(orig.shape[0], orig.shape[1] + rec.shape[1], orig.shape[2]),
                                       dtype=np.uint8)
                     canvas[0:orig.shape[0], 0:orig.shape[1]] = orig
-                    canvas[0:rec.shape[0], orig.shape[1]:orig.shape[1]+rec.shape[1]] = rec
+                    canvas[0:rec.shape[0], orig.shape[1]:orig.shape[1] + rec.shape[1]] = rec
                     os.makedirs(f"results_{cfg.run_name}", exist_ok=True)
                     cv2.imwrite(f"results_{cfg.run_name}/original_vs_reconstructed#{i}.png", canvas)
                 y = ((batch_idx + 1) * cfg.batch_size // 10) in cfg.save_powers
-                postfix = str((batch_idx + 1) * cfg.batch_size ) if y else 'last'
+                postfix = str((batch_idx + 1) * cfg.batch_size) if y else 'last'
                 torch.save(model, f"./weights/_tmp_{cfg.model_name}_{postfix}.pth")
                 model.train()
         print_one_line(
@@ -246,6 +248,7 @@ def train(epoch, dataloader):
             f'{speedometer.speed():.0f} samples / s '
         )
     update_metrics('train', epoch, running_loss / batch_idx)
+
 
 # ---------------------------- TEST LOGIC
 
@@ -258,7 +261,7 @@ def test(epoch, dataloader):
         for batch_idx, (templates, photos) in enumerate(tqdm(dataloader, file=sys.stdout)):
             templates = templates.to(device)
             photos = photos.to(device)
-            outputs = model(templates)#[:, :, :cfg.crop_size[0], : cfg.crop_size[1]]
+            outputs = model(templates)  # [:, :, :cfg.crop_size[0], : cfg.crop_size[1]]
             opf = perceptor(photos)
             rpf = perceptor(outputs)
             loss = loss_fn(outputs, photos, opf, rpf)
@@ -269,6 +272,7 @@ def test(epoch, dataloader):
     else:
         scheduler.step()
     print("\n")
+
 
 # ----------------------------
 

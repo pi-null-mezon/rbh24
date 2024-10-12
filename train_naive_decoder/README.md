@@ -179,8 +179,6 @@ To run protection demo (shows how to use photo to encrypt biometric template to 
 python protection_demo.py
 ```
 
-![](./artifacts/ROC.png)
-
 ```
 STATISTICS ON 1777 UNIQUE PERSONS IDENTIFICATIONS:
  - COSINE MIN:    -0.1728

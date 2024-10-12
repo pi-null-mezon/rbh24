@@ -190,6 +190,7 @@ arcface_dst = np.array(
      [41.5493, 92.3655], [70.7299, 92.2041]],
     dtype=np.float32)
 
+
 def estimate_norm(lmk, image_size=112,mode='arcface'):
     assert lmk.shape == (5, 2)
     assert image_size%112==0 or image_size%128==0
@@ -205,6 +206,7 @@ def estimate_norm(lmk, image_size=112,mode='arcface'):
     tform.estimate(lmk, dst)
     M = tform.params[0:2, :]
     return M
+
 
 def norm_crop(img, landmark, image_size=112, mode='arcface'):
     M = estimate_norm(landmark, image_size, mode)

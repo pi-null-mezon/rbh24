@@ -36,7 +36,9 @@ def tensor2image(tensor, mean, std, swap_red_blue=False):
 
 
 class CustomDataSet(Dataset):
-    def __init__(self, templates_paths, photos_path, do_aug, size, mean, std, swap_reb_blue, normalize_templates):
+    def __init__(self, templates_paths, photos_path, do_aug, size, mean, std, swap_reb_blue, normalize_templates,
+                 max_samples_per_id=-1):
+        assert max_samples_per_id != 0, "max_samples_per_id should not be equal to 0"
         self.mean = mean
         self.std = std
         self.swap_red_blue = swap_reb_blue
@@ -47,11 +49,23 @@ class CustomDataSet(Dataset):
         self.templates = []
         self.filenames = []
         for filename in templates_paths:
-            print(filename)
             with open(filename, 'rb') as i_f:
                 data = pickle.load(i_f)
-                self.filenames += data['file']
-                self.templates += data['buffalo']
+                if max_samples_per_id == -1:
+                    self.filenames += data['file']
+                    self.templates += data['buffalo']
+                else:
+                    tmp = {}
+                    for filename, template in zip(data['file'], data['buffalo']):
+                        _id = filename.split('/', 1)[0]
+                        if _id not in tmp:
+                            tmp[_id] = [(filename, template)]
+                        elif len(tmp[_id]) < max_samples_per_id:
+                            tmp[_id].append((filename, template))
+                    for _id in tmp:
+                        for filename, template in tmp[_id]:
+                            self.filenames.append(filename)
+                            self.templates.append(template)
         self.album = A.Compose([
             A.RandomBrightnessContrast(p=0.25, brightness_limit=(-0.25, 0.25)),
             A.HorizontalFlip(p=0.5),
@@ -73,6 +87,9 @@ class CustomDataSet(Dataset):
         if mat.shape[0] != self.size[1] and mat.shape[1] != self.size[0]:
             interp = cv2.INTER_LINEAR if mat.shape[0]*mat.shape[1] > self.size[0]*self.size[1] else cv2.INTER_CUBIC
             mat = cv2.resize(mat, self.size, interpolation=interp)
+        # Visual control
+        # cv2.imshow("probe", mat)
+        # cv2.waitKey(0)
         template = self.templates[idx]
         if self.normalize_templates:
             template = template / np.linalg.norm(template)
@@ -157,3 +174,40 @@ def initialize_onnx_session(model_path, use_cuda=True):
 def make_onnx_inference(session, input_data):
     results = session.run(None, {session.get_inputs()[0].name: input_data})
     return results[0]
+
+
+def torch2numpy(tensor):
+    return tensor.detach().cpu().numpy() if tensor.requires_grad else tensor.cpu().numpy()
+
+
+def extract_template_from_image(image, fa_model):
+    info = fa_model.get(cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
+    if len(info) > 0:
+        info = sorted(info, key=lambda x: (x['bbox'][2] - x['bbox'][0]) * (x['bbox'][3] - x['bbox'][1]))[-1]  # biggest one
+        return info
+    return None
+
+
+def extract_template_from_synth_image(img, buffalo_onnx_session, normalize):
+    resized_img = cv2.resize(img, (112, 112), interpolation=cv2.INTER_LINEAR)
+    tensor = image2tensor(resized_img, mean=3 * [127.5 / 255], std=3 * [127.5 / 255], swap_red_blue=True)
+    tensor = np.expand_dims(tensor, axis=0)
+    template = make_onnx_inference(buffalo_onnx_session, tensor)
+    if normalize:
+        template = template / np.linalg.norm(template)
+    return template
+
+
+def fit_img_into_rectangle(img, target_width, target_height, interpolation=cv2.INTER_LINEAR):
+    output = np.zeros((target_height, target_width, 3), dtype=np.uint8)
+    if (target_width / target_height) > (img.shape[1] / img.shape[0]):
+        height = target_height
+        width = int(target_height * (img.shape[1] / img.shape[0]))
+    else:
+        width = target_width
+        height = int(target_width * (img.shape[0] / img.shape[1]))
+    shift_cols = (target_width - width) // 2
+    shift_rows = (target_height - height) // 2
+    output[shift_rows:(shift_rows + height), shift_cols:(shift_cols + width)] = \
+        cv2.resize(img, (width, height), interpolation=interpolation)
+    return output
