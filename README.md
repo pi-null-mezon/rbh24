@@ -1,3 +1,5 @@
+[EN](./README.md) | [RU](./README.ru.md)
+
 RBH24
 ===
 
@@ -6,18 +8,19 @@ This is SystemFailure solution for Russian Biometric Hackaton 2024
 We have shown:
 
 1. Biometric template could be reconstructed to a face photo with high cosine similarity score with the original template. 
-For two test sets, for our strongest reconstruction algorithm, we have measured positive match rate to be 76.1 % and 43.4 % respectively.
+For two test sets, for our strongest reconstruction algorithm, we have measured positive match rate to be 100 %.
 
 Table 1 - reconstruction performance
 
-| Test set    | IDs  | Samples/ID | Demographics        | PMR@1E-6 (Our decoder) | PMR@1E-6 (Our adapter for InstantID) | PMR@1E-6 (Our decoderV2) |
-|-------------|------|------------|---------------------|------------------------|--------------------------------------|--------------------------|
-| **valface** | 1143 | 1          | White, Black, Asian | 34.2 %                 | 75.9 %                               | 100 %                    |
-| **glint**   | 1000 | 1          | White, Black, Asian | 25.3 %                 | 78.3 %                               | 100 %                    |
+| Test set         | IDs  | Samples/ID | Demographics        | PMR@1E-6 (Our decoder) | PMR@1E-6 (Our adapter for InstantID) | PMR@1E-6 (Our decoderV2) |
+|------------------|------|------------|---------------------|------------------------|--------------------------------------|--------------------------|
+| **valface**      | 1143 | 1          | White, Black, Asian | 34.2 %                 | 75.9 %                               | 100 %                    |
+| **glint**        | 1000 | 1          | White, Black, Asian | 25.3 %                 | 78.3 %                               | 100 %                    |
+| **embedding_v3** | 101  | N/A        | N/A                 | N/A                    | 87.1 %                               | 100 %                    |
 
 Where:
 
- - PMR@FMR=1E-6 is positive match rate for `insightface/buffalo_l` at [False Match Rate 1E-6](./researches/README.md)
+ - PMR@1E-6 is positive match rate for `insightface/buffalo_l` at [False Match Rate 1E-6](./researches/README.md)
 
  - **valface** - Manually collected photos. Mostly non-famous persons
 
