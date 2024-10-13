@@ -35,8 +35,7 @@ Where:
 
  - **glint** - Subset of first 1K ids from glint dataset. Divergent poses, blurred faces, emotions, occlusions
 
-2. To make reconstruction algorithm relatively small data could be stollen from biometric system. Our strongest 
-reconstruction algorithm was trained on only 4K high quality photo-template pairs!
+2. To make reconstruction algorithm, relatively small amount of data could be stollen from biometric system. Our second by strength reconstruction algorithm was trained on only 4K high quality photo-template pairs!
 
 3. We have developed and evaluated a robust yet computationally efficient method for the protection of biometric
 templates against reconstruction attacks. This approach utilizes facial landmark coordinates to generate encryption
