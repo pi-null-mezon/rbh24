@@ -54,7 +54,7 @@ Table 2 - protection performance
 | **Cosine Mean**                      | 0.0190                    | 0.0120            | 0.0091            |
 | **Cosine Median**                    | 0.0166                    | 0.0111            | 0.0101            |
 | **Cosine Max**                       | 0.1953                    | 0.1761            | 0.1539            |
-| **PMR@FMR=1E-6**                     | 0 of 1777 (0.0 %)         | 0 of 1777 (0.0 %) | 0 of 1777 (0.0 %) |
+| **PMR@1E-6**                     | 0 of 1777 (0.0 %)         | 0 of 1777 (0.0 %) | 0 of 1777 (0.0 %) |
 
 ### Examples
 
