@@ -2,7 +2,7 @@
 
 РЕКОНСТРУКЦИЯ ТЕСТОВОГО НАБОРА ЭМБЕДИНГОВ `embedings_v3.pickle`:
 
- - download archive: https://disk.yandex.ru/d/cTriN6tMzgHxUw
+ - загрузить архив: https://disk.yandex.ru/d/cTriN6tMzgHxUw
 
 СКРИНКАСТЫ:
 
