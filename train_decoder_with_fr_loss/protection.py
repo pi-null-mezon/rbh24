@@ -137,7 +137,7 @@ def convert_keypoints_to_bbox_normalized(keypoints, bbox):
         x_norm = x_bbox / bbox_width
         y_norm = y_bbox / bbox_height
         normalized_keypoints.append([x_norm, y_norm])
-    return 1000 * np.array(normalized_keypoints)
+    return np.array(normalized_keypoints)
 
 '''
 def generate_key_from_keypoints(keypoints, length):

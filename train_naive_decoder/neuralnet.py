@@ -7,8 +7,6 @@ from tools import model_size_mb
 class ConvTBlock(nn.Module):
     def __init__(self, in_channels: int, out_channels: int) -> None:
         super(ConvTBlock, self).__init__()
-        # sequential block consisting of a transposed 2d convolution,
-        # batch normalization, and leaky relu activation
         self.block = nn.Sequential(
             nn.ConvTranspose2d(
                 in_channels,  # number of input channels
@@ -29,7 +27,7 @@ class ConvTBlock(nn.Module):
 class ConvFaceDecoder(nn.Module):
     def __init__(self, latent_dim: int) -> None:
         super(ConvFaceDecoder, self).__init__()
-        hidden_dims = [128, 192, 256, 320, 384, 512, 512]
+        hidden_dims = [128, 192, 256, 320, 384, 512, latent_dim]
         hidden_dims.reverse()
         self.decoder = nn.Sequential(
             *[ConvTBlock(in_f, out_f) for in_f, out_f in zip(hidden_dims[:-1], hidden_dims[1:])]
@@ -87,9 +85,9 @@ class ConvFaceDecoderLarge(nn.Module):
 
 
 if __name__ == "__main__":
-    latent_dim = 512
-    dummy = torch.randn(size=(10, latent_dim))
-    model = ConvFaceDecoderLarge(latent_dim=latent_dim).eval()
+    _latent_dim = 512
+    dummy = torch.randn(size=(10, _latent_dim))
+    model = ConvFaceDecoderLarge(latent_dim=_latent_dim).eval()
     with torch.no_grad():
         out = model(dummy)
     print(dummy.shape, out.shape)

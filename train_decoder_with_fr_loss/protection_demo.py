@@ -72,7 +72,9 @@ protected_identification_set_encrypted = []
 protected_identification_set_decrypted = []
 cosines = []
 print("ENCRYPTING TEMPLATES - please wait...")
-for item in identification_set_without_protection:
+max_items_to_show = 10
+show_step = 100
+for i, item in enumerate(identification_set_without_protection):
     normalized_keypoints = convert_keypoints_to_bbox_normalized(keypoints=item['kps'], bbox=item['bbox'])
     encrypted_template = encrypt_template(item['emb'], normalized_keypoints)
     protected_identification_set_encrypted.append({'id': item['id'], 'emb': encrypted_template})
@@ -80,8 +82,14 @@ for item in identification_set_without_protection:
     protected_identification_set_decrypted.append({'id': item['id'], 'emb': decrypted_template})
     cosine = np.dot(encrypted_template / np.linalg.norm(encrypted_template), item['emb'] / np.linalg.norm(item['emb']))
     cosines.append(cosine)
+    if max_items_to_show > 0 and i % show_step == 0:
+        print(f"ENCRYPTION EXAMPLE FOR ID: {i}")
+        print(f" -       raw: {item['emb'][:5]}...{item['emb'][-5:]}, norm: {np.linalg.norm(item['emb'])}")
+        print(f" - encrypted: {encrypted_template[:5]}...{encrypted_template[-5:]}, norm: {np.linalg.norm(encrypted_template)}")
+        max_items_to_show -= 1
 print_cosines_stats(cosines, threshold=cfg.buffalo_cosine_threshold)
 print("ENCRYPTING TEMPLATES - finished\n")
+
 
 # Step 4 - let's test our identification system ROC characteristic (FPIR vs FNIR) with and without encryption
 
